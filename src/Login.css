@@ -1,0 +1,25 @@
+.login {
+  background-color: #f8f8f8;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
+}
+
+.container {
+  padding: 100px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.container>Button {
+  /* background-color: #4a8bfb; */
+  color: #4a8bfb;
+  margin-top: 24px;
+  text-transform: inherit !important;
+}
+
+.container>img {
+  margin-bottom: 40px;
+}
