@@ -1,25 +1,64 @@
 .login {
-  background-color: #f8f8f8;
-  height: 100vh;
-  width: 100vw;
-  display: grid;
-  place-items: center;
+    background-color: #2b272c;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    place-items: center;
 }
 
 .container {
-  padding: 100px;
-  text-align: center;
-  background-color: #fff;
-  border-radius: 10px;
+    padding: 80px 320px;
+    text-align: center;
+    background-color: #232324;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
 
-.container>Button {
-  /* background-color: #4a8bfb; */
-  color: #4a8bfb;
-  margin-top: 24px;
-  text-transform: inherit !important;
+.container > Button {
+    font-size: 1.2rem;
+    color: #4a8bfb;
+    text-transform: inherit !important;
+    border: 1px solid;
+    padding: 12px;
+    transition: all .4s;
 }
 
-.container>img {
-  margin-bottom: 40px;
+.container > Button:hover {
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 16px;
+}
+
+.container > img {
+    height: 120px;
+}
+
+.text {
+    color: #fff;
+    font-size: 2rem;
+    margin: 1.5rem 0 2rem;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 0;
+        height: 90vh;
+        width: 80vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .container > img {
+        height: 64px;
+    }
+
+    .text {
+        font-size: 1rem;
+    }
+
+    .container > Button {
+        font-size: .6rem;
+        border: none !important;
+    }
 }

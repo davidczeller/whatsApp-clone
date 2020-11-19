@@ -1,0 +1,25 @@
+[debug] [2020-11-17T21:07:44.143Z] ----------------------------------------------------------------------
+[debug] [2020-11-17T21:07:44.145Z] Command:       /Users/dave/.nvm/versions/node/v13.10.1/bin/node /Users/dave/.nvm/versions/node/v13.10.1/bin/firebase init
+[debug] [2020-11-17T21:07:44.145Z] CLI Version:   8.9.0
+[debug] [2020-11-17T21:07:44.145Z] Platform:      darwin
+[debug] [2020-11-17T21:07:44.145Z] Node Version:  v13.10.1
+[debug] [2020-11-17T21:07:44.146Z] Time:          Tue Nov 17 2020 22:07:44 GMT+0100 (Central European Standard Time)
+[debug] [2020-11-17T21:07:44.147Z] ----------------------------------------------------------------------
+[debug] [2020-11-17T21:07:44.147Z] 
+[debug] [2020-11-17T21:07:44.155Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-11-17T21:07:44.156Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/dave/Programming/whatsup-clone
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+

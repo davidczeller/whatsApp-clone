@@ -43,7 +43,7 @@ export function SidebarChat({ id, name, addnewChat }) {
         {/*<Avatar src='https://i.pravatar.cc/300'/>*/}
         <div className='info'>
           <h2>{name}</h2>
-          <p>{messages && messages[0] && messages[0].message}</p>
+          <p>{messages.length && messages[0].message}</p>
         </div>
       </div>
     </Link>
