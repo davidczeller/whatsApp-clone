@@ -114,11 +114,9 @@
 }
 
 @media (max-width: 960px) {
-  /* .header {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-  } */
+  .header {
+    padding: 8px;
+  }
   .body {
     height: calc(100% - 20vh);
   }
