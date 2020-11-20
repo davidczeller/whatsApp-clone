@@ -104,6 +104,10 @@
   outline: none;
 }
 
+.footer>form>input[type="text"] {
+  font-size: 16px;
+}
+
 .footer>form>button {
   display: none;
 }
