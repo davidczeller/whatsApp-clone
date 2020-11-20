@@ -41,7 +41,17 @@ export function SidebarChat({ id, name, addnewChat, isMobile, setOpen }) {
   }
 
   return !addnewChat ? (
-    <Link to={`/rooms/${id}`} onClick={() => setOpen(true)}>
+    isMobile ? (
+       <div className='sidebarChat' onClick={() => setOpen(true)}>
+        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+        {/*<Avatar src='https://i.pravatar.cc/300'/>*/}
+        <div className='info'>
+          <h2>{name}</h2>
+          <p>{messages.length && messages[0].message}</p>
+        </div>
+      </div>
+    ) : (
+    <Link  to={`/rooms/${id}`}>
       <div className='sidebarChat'>
         <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
         {/*<Avatar src='https://i.pravatar.cc/300'/>*/}
@@ -51,6 +61,7 @@ export function SidebarChat({ id, name, addnewChat, isMobile, setOpen }) {
         </div>
       </div>
     </Link>
+    )
   )
     : (
       isMobile ? (
