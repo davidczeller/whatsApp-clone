@@ -61,6 +61,8 @@
   width: fit-content;
   margin-bottom: 30px;
   max-width: 60%;
+  min-width: 80px;
+  overflow: scroll;
 }
 
 .chatName {
@@ -77,8 +79,7 @@
 }
 
 .timestamp {
-  margin-left: 10px;
-  font-size: xx-small;
+  display: none;
 }
 
 .footer {
@@ -120,9 +121,14 @@
 @media (max-width: 960px) {
   .header {
     padding: 8px;
+    border: none;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
   }
   .body {
     height: calc(100% - 18vh);
+    background: #29272b;
+    padding-top: 40px;
+    overflow-x: hidden;
   }
   .footer {
     background: #232425;

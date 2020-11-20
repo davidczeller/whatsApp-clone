@@ -25,16 +25,21 @@ a {
 
 @media (max-width: 960px) {
     .sidebarChat {
-        border-bottom: 0.1px solid #7a7a7a;
-    }
-    .sidebarChat:last-child {
         border-bottom: none;
+        padding: 12px 24px;
     }
     .sidebarChat:hover {
         background-color: #2b272c;
     }
     .info>h2 {
         color: #ffffff;
+    }
+    .info>p {
+        white-space: nowrap;
+        width: 64vw;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
     }
     .createNewIcon {
         position: absolute !important;

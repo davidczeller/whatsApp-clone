@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 
 import { Avatar, IconButton } from '@material-ui/core'
-import { Create } from "@material-ui/icons";
+import { RateReview } from "@material-ui/icons";
 
 import './SidebarChat.css'
 
@@ -40,33 +40,44 @@ export function SidebarChat({ id, name, addnewChat, isMobile, setOpen }) {
     }
   }
 
+
   return !addnewChat ? (
     isMobile ? (
-       <Link to={`/rooms/${id}`} className='sidebarChat' onClick={() => setOpen(true)}>
-        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
-        {/*<Avatar src='https://i.pravatar.cc/300'/>*/}
+      <Link to={`/rooms/${id}`} className='sidebarChat' onClick={() => setOpen(true)}>
+        {/* <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} /> */}
+        {/* <Avatar src={`https://i.pravatar.cc/${seed}`} /> */}
+        {/* <Avatar src={`https://picsum.photos/seed/picsum/200`} /> */}
+        {/* <Avatar src={`https://source.unsplash.com/collection/${seed}`} /> */}
+        <Avatar src={`https://source.unsplash.com/random/200x200?sig=${seed}`} />
         <div className='info'>
           <h2>{name}</h2>
-          <p>{messages.length && messages[0].message}</p>
+          {messages.length ? (
+            <p>{messages[0].message}</p>
+          ) : (
+              <p>No messages yet...</p>
+            )}
         </div>
       </Link>
     ) : (
-    <Link  to={`/rooms/${id}`}>
-      <div className='sidebarChat'>
-        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
-        {/*<Avatar src='https://i.pravatar.cc/300'/>*/}
-        <div className='info'>
-          <h2>{name}</h2>
-          <p>{messages.length && messages[0].message}</p>
-        </div>
-      </div>
-    </Link>
-    )
+        <Link to={`/rooms/${id}`}>
+          <div className='sidebarChat'>
+            {/* <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} /> */}
+            {/* <Avatar src={`https://i.pravatar.cc/${seed}`} /> */}
+            {/* <Avatar src={`https://picsum.photos/seed/picsum/200`} /> */}
+            {/* <Avatar src={`https://source.unsplash.com/collection/${seed}`} /> */}
+            <Avatar src={`https://source.unsplash.com/random/200x200?sig=${seed}`} />
+            <div className='info'>
+              <h2>{name}</h2>
+              <p>{messages.length && messages[0].message}</p>
+            </div>
+          </div>
+        </Link>
+      )
   )
     : (
       isMobile ? (
         <IconButton className="createNewIcon" onClick={createChat}>
-          <Create style={{ color: '#fff' }} />
+          <RateReview style={{ color: '#fff' }} />
         </IconButton>
       ) : (
           <div
