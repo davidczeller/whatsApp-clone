@@ -1,0 +1,24 @@
+.iconContainer {
+  height: 8vh;
+  width: 98vw;
+  position: fixed;
+  bottom: .5vh;
+  left: 1vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #232324;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.iconContainer>button>.MuiIconButton-label {
+  display: flex;
+  flex-direction: column;
+  color: #bcbcbd;
+}
+
+.iconContainer>button>.MuiIconButton-label>p {
+  font-size: .8rem;
+  margin-top: 4px;
+}

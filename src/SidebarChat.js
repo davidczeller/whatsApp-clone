@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
-import { Avatar } from '@material-ui/core'
+
+import { Avatar, IconButton } from '@material-ui/core'
+import { Create } from "@material-ui/icons";
+
 import './SidebarChat.css'
+
 import db from './firbase'
 
 
-export function SidebarChat({ id, name, addnewChat }) {
+export function SidebarChat({ id, name, addnewChat, isMobile, setOpen }) {
 
   const [seed, setSeed] = useState('');
   const [messages, setMessages] = useState('')
@@ -37,7 +41,7 @@ export function SidebarChat({ id, name, addnewChat }) {
   }
 
   return !addnewChat ? (
-    <Link to={`/rooms/${id}`}>
+    <Link to={`/rooms/${id}`} onClick={() => setOpen(true)}>
       <div className='sidebarChat'>
         <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
         {/*<Avatar src='https://i.pravatar.cc/300'/>*/}
@@ -49,11 +53,17 @@ export function SidebarChat({ id, name, addnewChat }) {
     </Link>
   )
     : (
-      <div
-        onClick={createChat}
-        className='sidebarChat'
-      >
-        <h2>Add new Chat</h2>
-      </div>
+      isMobile ? (
+        <IconButton className="createNewIcon" onClick={createChat}>
+          <Create style={{ color: '#fff' }} />
+        </IconButton>
+      ) : (
+          <div
+            onClick={createChat}
+            className='sidebarChat'
+          >
+            <h2>Add new Chat</h2>
+          </div>
+        )
     )
 }

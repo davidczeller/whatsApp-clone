@@ -3,6 +3,7 @@
     height: 100vh;
     display: grid;
     place-items: center;
+    overflow: hidden;
 }
 
 .app_body {
@@ -10,4 +11,11 @@
     background-color: #ededed;
     height: 90vh;
     width: 90vw;
+    overflow: hidden;
+}
+
+@media (max-width: 960px) {
+    .app {
+        background-color: #2b272c;
+    }
 }

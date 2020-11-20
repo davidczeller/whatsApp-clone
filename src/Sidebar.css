@@ -69,3 +69,22 @@
     overflow-x: scroll;
     background-color: #fff;
 }
+
+@media (max-width: 960px) {
+    .sidebar {
+        height: 100vh;
+    }
+    .header {
+        background-color: #232425;
+        color: #fff;
+    }
+    .headerRight {
+        justify-content: flex-end !important;
+    }
+    .chats {
+        background-color: #2b272c;
+    }
+    .search {
+        display: none;
+    }
+}

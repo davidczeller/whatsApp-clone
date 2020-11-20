@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Avatar, IconButton } from '@material-ui/core'
-import { DonutLarge, Chat, MoreVert, SearchOutlined } from "@material-ui/icons";
+import { DonutLarge, Chat, MoreVert, SearchOutlined, Create } from "@material-ui/icons";
 
 import './Sidebar.css';
 import { SidebarChat } from "./SidebarChat";
@@ -9,7 +9,9 @@ import db from './firbase'
 export function Sidebar(props) {
   const {
     avatar,
-    name
+    name,
+    isMobile,
+    setOpen
   } = props
 
   const [rooms, setRooms] = useState([]);
@@ -32,15 +34,19 @@ export function Sidebar(props) {
           <h3>{name}</h3>
         </div>
         <div className='headerRight'>
-          <IconButton>
-            <DonutLarge />
-          </IconButton>
-          <IconButton>
-            <Chat />
-          </IconButton>
-          <IconButton>
-            <MoreVert />
-          </IconButton>
+          {!isMobile && (
+            <>
+              <IconButton>
+                <DonutLarge />
+              </IconButton>
+              <IconButton>
+                <Chat />
+              </IconButton>
+              <IconButton>
+                <MoreVert />
+              </IconButton>
+            </>
+          )}
         </div>
       </div>
       <div className='search'>
@@ -50,12 +56,19 @@ export function Sidebar(props) {
         </div>
       </div>
       <div className='chats'>
-        <SidebarChat addnewChat />
+        <SidebarChat
+          addnewChat
+          isMobile={isMobile}
+          setOpen={setOpen}
+        />
         {rooms.map(room => (
           <SidebarChat
             key={room.id}
             id={room.id}
-            name={room.data.name} />
+            name={room.data.name}
+            isMobile={isMobile}
+            setOpen={setOpen}
+          />
         ))}
       </div>
     </div>

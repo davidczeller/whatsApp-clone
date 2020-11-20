@@ -39,7 +39,7 @@
     margin: 1.5rem 0 2rem;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 960px) {
     .container {
         padding: 0;
         height: 90vh;
