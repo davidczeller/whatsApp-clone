@@ -41,10 +41,10 @@
 
 @media (max-width: 960px) {
     .login {
-        height: 40vh;
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow-y: hidden;
     }
     .container {
         padding: 0;
