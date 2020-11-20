@@ -2,7 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Avatar, IconButton } from '@material-ui/core'
-import { DonutLarge, AttachFile, MoreVert, InsertEmoticon, Mic, Send, CameraAlt, ArrowBackIos } from '@material-ui/icons'
+import {
+  DonutLarge,
+  AttachFile,
+  MoreVert,
+  InsertEmoticon,
+  Mic,
+  Send,
+  CameraAlt,
+  ArrowBackIos,
+} from '@material-ui/icons'
 
 import db from './firbase'
 import firebase from 'firebase'
@@ -63,6 +72,7 @@ export function Chat(props) {
     })
     setInput('')
   }
+
 
   return (
     <div
