@@ -14,7 +14,7 @@
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
 
-.container > Button {
+.container>Button {
     font-size: 1.2rem;
     color: #4a8bfb;
     text-transform: inherit !important;
@@ -23,13 +23,13 @@
     transition: all .4s;
 }
 
-.container > Button:hover {
+.container>Button:hover {
     border: 1px solid #fff;
     color: #fff;
     border-radius: 16px;
 }
 
-.container > img {
+.container>img {
     height: 120px;
 }
 
@@ -40,6 +40,12 @@
 }
 
 @media (max-width: 960px) {
+    .login {
+        height: 40vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .container {
         padding: 0;
         height: 64vh;
@@ -48,16 +54,13 @@
         flex-direction: column;
         justify-content: center;
     }
-
-    .container > img {
+    .container>img {
         height: 64px;
     }
-
     .text {
         font-size: 1rem;
     }
-
-    .container > Button {
+    .container>Button {
         font-size: .6rem;
         border: none !important;
     }

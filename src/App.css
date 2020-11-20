@@ -16,6 +16,8 @@
 
 @media (max-width: 960px) {
     .app {
+        overflow: hidden;
+        height: calc(100vh - 72px);
         background-color: #2b272c;
     }
 }
