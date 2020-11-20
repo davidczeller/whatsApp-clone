@@ -49,10 +49,15 @@ function App() {
                 />
                 <Switch>
                   <Route path='/rooms/:roomId'>
-                    <Chat name={user.additionalUserInfo.profile.name} isMobile={isMobile} />
+                    <Chat
+                      name={user.additionalUserInfo.profile.name}
+                      isMobile={isMobile}
+                    />
                   </Route>
                   <Route path='/'>
-                    <Chat isMobile={isMobile} />
+                    <Chat
+                      isMobile={isMobile}
+                    />
                   </Route>
                 </Switch>
               </Router>
@@ -68,10 +73,18 @@ function App() {
                 <MobileNav setOpen={setOpen} />
                 <Switch>
                   <Route path='/rooms/:roomId'>
-                    <Chat name={user.additionalUserInfo.profile.name} open={open} isMobile={isMobile}/>
+                    <Chat
+                      name={user.additionalUserInfo.profile.name}
+                      open={open}
+                      isMobile={isMobile}
+                      setOpen={setOpen}
+                    />
                   </Route>
                   <Route path='/'>
-                    <Chat isMobile={isMobile}/>
+                    <Chat
+                      isMobile={isMobile}
+                      setOpen={setOpen}
+                    />
                   </Route>
                 </Switch>
               </Router>

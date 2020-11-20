@@ -83,6 +83,7 @@
     }
     .chats {
         background-color: #2b272c;
+        margin-bottom: 10vh;
     }
     .search {
         display: none;

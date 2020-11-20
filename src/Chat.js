@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Avatar, IconButton } from '@material-ui/core'
-import { DonutLarge, AttachFile, MoreVert, InsertEmoticon, Mic, Send } from '@material-ui/icons'
+import { DonutLarge, AttachFile, MoreVert, InsertEmoticon, Mic, Send, CameraAlt, ArrowBackIos } from '@material-ui/icons'
 
 import db from './firbase'
 import firebase from 'firebase'
@@ -13,6 +13,7 @@ export function Chat(props) {
   const {
     name,
     open,
+    setOpen,
     isMobile,
   } = props
 
@@ -70,12 +71,13 @@ export function Chat(props) {
     >
       <div style={{ position: 'relative' }}>
         <div className={'header'}>
+          <ArrowBackIos onClick={() => setOpen(false)} />
           <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
           <div className='info'>
             <h3>{roomName}</h3>
             <p>
               Last seen {''}
-              {lastSeen && lastSeen.substr(lastSeen.length - 29)}
+              {lastSeen && lastSeen.substr(lastSeen.length - 25)}
             </p>
           </div>
           {!isMobile &&
@@ -102,7 +104,12 @@ export function Chat(props) {
             </span>
             {message.message}
             <span className='timestamp'>
-              {new Date(message.timestamp && message.timestamp.toDate()).toUTCString()}
+              {!isMobile ? (
+                new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
+              ) : (
+                  new Date(message.timestamp && message.timestamp.toDate()).toUTCString().slice(0, -4)
+                )
+              }
             </span>
           </p>
         ))}
@@ -117,12 +124,23 @@ export function Chat(props) {
           </p> */}
       </div>
       <div className='footer'>
-        <InsertEmoticon style={{ color: '#fff' }}/>
+        <InsertEmoticon style={{ color: '#444' }} />
         <form>
           <input value={input} onChange={e => setInput(e.target.value)} type='text' placeholder='Type a message' />
           <button type='submit' onClick={sendMessage}>Send a message</button>
         </form>
-        {isMobile ? <IconButton onClick={sendMessage}><Send style={{ color: '#fff' }} /></IconButton> : <Mic />}
+        {isMobile ? (
+          <>
+            <IconButton onClick={sendMessage}>
+              <Send style={{ color: '#fff' }} />
+            </IconButton>
+            <IconButton>
+              <CameraAlt style={{ color: '#444' }} />
+            </IconButton>
+          </>
+        ) : (
+            <Mic />
+          )}
       </div>
     </div>
   )

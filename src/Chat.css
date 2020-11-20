@@ -8,10 +8,12 @@
 
 .chatMobile {
   position: absolute;
-  height: 91vh;
+  /* height: 91vh; */
+  height: 100vh;
   transition: all .4s;
   opacity: 0;
   pointer-events: none;
+  width: 100vw;
 }
 
 .header {
@@ -116,6 +118,15 @@
     padding: 8px;
   }
   .body {
-    height: calc(100% - 20vh);
+    height: calc(100% - 18vh);
+  }
+  .footer {
+    background: #232425;
+    height: 10vh;
+    padding: 0;
+    padding-left: 8px;
+  }
+  .footer>form {
+    margin: 0 3px 0 12px;
   }
 }

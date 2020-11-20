@@ -27,15 +27,18 @@ a {
     .sidebarChat {
         border-bottom: 0.1px solid #7a7a7a;
     }
-    .info>h2 {
-        color: #ffffff;
+    .sidebarChat:last-child {
+        border-bottom: none;
     }
     .sidebarChat:hover {
         background-color: #2b272c;
     }
+    .info>h2 {
+        color: #ffffff;
+    }
     .createNewIcon {
         position: absolute !important;
-        top: 16px;
+        top: .6vh;
         right: 16px;
     }
 }
