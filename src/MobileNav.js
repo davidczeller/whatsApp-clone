@@ -16,7 +16,7 @@ export function MobileNav(props) {
 
 
   let color = 'ffffff'
-  let activeColor = '8dff8c'
+  let activeColor = '9fd0c6'
 
   // if (active) {
   //   active.style.color = '#000000'
@@ -42,7 +42,7 @@ export function MobileNav(props) {
       </IconButton>
       <IconButton onClick={(e) => (setOpen(false), setActive(e.currentTarget.querySelector('p')))}>
         <img src={`https://img.icons8.com/dotty/24/${activeColor}/chat.png`} />
-        <p style={{ color: '#8dff8c' }}>Chat</p>
+        <p style={{ color: '#9fd0c6' }}>Chat</p>
       </IconButton>
       <IconButton onClick={(e) => (setActive(e.currentTarget.querySelector('p')))}>
         <img src={`https://img.icons8.com/dotty/24/${color}/settings.png`} />

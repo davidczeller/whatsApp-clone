@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Avatar, IconButton } from '@material-ui/core'
@@ -11,9 +11,11 @@ import {
   Send,
   CameraAlt,
   ArrowBackIos,
+  VoiceChat,
+  PermPhoneMsg,
 } from '@material-ui/icons'
 
-import db from './firbase'
+import db, { myStorage } from './firbase'
 import firebase from 'firebase'
 
 import './Chat.css'
@@ -34,13 +36,11 @@ export function Chat(props) {
   const [messages, setMessages] = useState('')
   const [lastSeen, setLastSeen] = useState('')
 
-  console.log(isMobile)
-
-  const elmt = document.querySelector('.body')
-
   useEffect(() => {
-    setLastSeen(elmt && elmt.lastChild.textContent)
-  }, [messages.length])
+    messages && messages.map((msg, idx, arr) => (
+      arr.length - 1 === idx && setLastSeen(new Date(msg.timestamp && msg.timestamp.toDate()).toString())
+    ))
+  }, [messages])
 
   useEffect(() => {
     if (roomId) {
@@ -59,7 +59,7 @@ export function Chat(props) {
   }, [roomId])
 
   useEffect(() => {
-    setSeed(Math.floor(Math.random() * 5000))
+    setSeed(Math.floor(Math.random() * 500))
   }, [roomId])
 
   const sendMessage = (e) => {
@@ -73,6 +73,56 @@ export function Chat(props) {
     setInput('')
   }
 
+  let msgEnd = useRef(null);
+
+
+  const scrollToBottom = () => {
+    msgEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
+  useEffect(scrollToBottom, [messages]);
+
+
+  // const [currentPhotoFile, setCurrentPhotoFile] = useState(null)
+  // let refInput = useRef(null);
+
+  // const onChoosePhoto = event => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     setCurrentPhotoFile(event.target.files[0])
+  //     // Check this file is an image?
+  //     const prefixFiletype = event.target.files[0].type.toString()
+  //     if (prefixFiletype.indexOf('image/') === 0) {
+  //       uploadPhoto()
+  //     } else {
+  //       console.log('This file is not an image')
+  //     }
+  //   }
+  // }
+
+  // const uploadPhoto = () => {
+  //   const uploadTask = myStorage
+  //     .ref()
+  //     .child()
+  //     .put(currentPhotoFile)
+
+  //   uploadTask.on(
+  //     // AppString.UPLOAD_CHANGED,
+  //     // null,
+  //     err => {
+  //       console.log('Something went wrong!')
+  //       // this.setState({isLoading: false})
+  //       // this.props.showToast(0, err.message)
+  //     },
+  //     () => {
+  //       uploadTask.ref().getDownloadURL().then(url => {
+  //         // this.setState({isLoading: false})
+  //         console.log(url)
+  //         // sendMessage(url, 0)
+  //       })
+  //     }
+  //   )
+  //   // })
+  // }
 
   return (
     <div
@@ -81,13 +131,13 @@ export function Chat(props) {
     >
       <div style={{ position: 'relative' }}>
         <div className={'header'}>
-          <ArrowBackIos onClick={() => setOpen(false)} />
-          <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+          <ArrowBackIos onClick={() => setOpen(false)} style={{ margin: '0 12px' }} />
+          <Avatar src={`https://source.unsplash.com/random/200x200?sig=${seed}`} />
           <div className='info'>
             <h3>{roomName}</h3>
             <p>
-              Last seen {''}
-              {lastSeen && lastSeen.substr(lastSeen.length - 25)}
+              Last seen at {''}
+              {lastSeen && lastSeen.substring(15, 21)}
             </p>
           </div>
           {!isMobile &&
@@ -102,13 +152,29 @@ export function Chat(props) {
                 <MoreVert />
               </IconButton>
             </div>
-          }
+            // ) : (
 
+            // <>
+            //   <IconButton>
+            //     <PermPhoneMsg style={{ color: '#9fd0c6' }} />
+            //   </IconButton>
+            // <IconButton>
+            //   <VoiceChat
+            //     style={{
+            //       color: '#9fd0c6',
+            //       marginLeft: '-24px',
+            //       padding: '0 !important',
+            //     }}
+            //   />
+            // </IconButton>
+            // </>
+            // )
+          }
         </div>
       </div>
       <div className='body'>
-        {messages && messages.map((message) => (
-          <p className={`chatMsg ${message.name === name && 'reciever'}`}>
+        {messages && messages.map((message, idx) => (
+          <p key={idx + 1} className={`chatMsg ${message.name === name && 'reciever'}`}>
             <span className='chatName'>
               {message.name}
             </span>
@@ -117,7 +183,7 @@ export function Chat(props) {
               {!isMobile ? (
                 new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
               ) : (
-                  new Date(message.timestamp && message.timestamp.toDate()).toUTCString().slice(0, -4)
+                  new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
                 )
               }
             </span>
@@ -132,6 +198,11 @@ export function Chat(props) {
               {new Date(message.timestamp && message.timestamp.toDate()).toUTCString()}
             </span>
           </p> */}
+        <div
+          style={{ float: "left", clear: "both" }}
+          ref={el => msgEnd = el}
+        >
+        </div>
       </div>
       <div className='footer'>
         <InsertEmoticon style={{ color: '#444' }} />

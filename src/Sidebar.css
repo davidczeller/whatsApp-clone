@@ -77,7 +77,9 @@
     .header {
         background-color: #232425;
         color: #fff;
-        margin-bottom: 16px;
+    }
+    .chats a:first-of-type {
+        padding-top: 32px;
     }
     .headerRight {
         justify-content: flex-end !important;
