@@ -106,6 +106,13 @@
     .sidebar {
         height: 100vh;
     }
+    .sideBarHeader {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #28262a;
+        color: #fff;
+    }
     .header {
         background-color: #232425;
         color: #fff;

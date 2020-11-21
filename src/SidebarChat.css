@@ -42,16 +42,17 @@ a {
     .sidebarChat {
         border-bottom: none;
         padding: 12px 24px;
+        background-color: #29282b;
     }
     .sidebarChat:hover {
-        background-color: #2b272c;
+        background-color: #383838;
     }
     .info>h2 {
         color: #ffffff;
     }
     .createNewIcon {
         position: absolute !important;
-        top: .6vh;
+        top: 16px;
         right: 16px;
     }
 }

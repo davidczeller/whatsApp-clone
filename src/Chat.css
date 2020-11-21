@@ -167,7 +167,7 @@
   }
   .body {
     height: calc(100% - 18vh);
-    padding-top: 40px;
+    padding-top: 72px;
     overflow-x: hidden;
   }
   .footer {
