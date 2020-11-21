@@ -6,11 +6,15 @@
   pointer-events: all !important;
 }
 
+.chat>.body {
+  padding-top: 96px;
+}
+
 .chatMobile {
   position: absolute;
   /* height: 91vh; */
   height: 100vh;
-  transition: all .4s;
+  transition: all .4s ease-in;
   opacity: 0;
   pointer-events: none;
   width: 100vw;
@@ -21,8 +25,18 @@
   padding: 20px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid lightgray;
-  position: relative;
+  position: absolute;
+  background-color: #29272b;
+  color: #fff;
+  opacity: .995;
+  width: 100%;
+  z-index: 2;
+  border-bottom: 2px solid #29272b;
+  transition: all .4s ease-in;
+}
+
+.header:hover {
+  border-bottom: 2px solid #000;
 }
 
 .info {
@@ -45,9 +59,17 @@
   min-width: 100px;
 }
 
+.headerRight>.MuiIconButton-root {
+  color: #9E9E9E;
+  transition: all .4s ease-in;
+}
+
+.headerRight>.MuiIconButton-root:hover {
+  color: #fff;
+}
+
 .body {
-  background: center url('https://images.unsplash.com/photo-1545260785-1238eb3d69a7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1316&q=80') no-repeat;
-  background-size: cover;
+  background: #29272b;
   flex: 1;
   padding: 30px;
   overflow: scroll;
@@ -65,6 +87,22 @@
   max-width: 60%;
   min-width: 80px;
   overflow: scroll;
+}
+
+.active {
+  margin-left: auto;
+  position: relative;
+  font-size: 16px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  width: fit-content;
+  margin-bottom: 16px;
+  display: none;
+}
+
+.visible {
+  display: block;
 }
 
 .chatName {
@@ -89,8 +127,9 @@
   justify-content: space-between;
   align-items: center;
   height: 62px;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid #2a282c;
   padding: 0 24px;
+  background-color: #383838;
 }
 
 .footer>form {
@@ -128,7 +167,6 @@
   }
   .body {
     height: calc(100% - 18vh);
-    background: #29272b;
     padding-top: 40px;
     overflow-x: hidden;
   }
@@ -141,7 +179,7 @@
   .footer>form {
     margin: 0 3px 0 12px;
   }
-  .reciever{
+  .reciever {
     background-color: #9fd0c6;
   }
 }

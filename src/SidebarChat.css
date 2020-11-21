@@ -2,11 +2,18 @@
     display: flex;
     padding: 20px;
     cursor: pointer;
-    border-bottom: 1px solid #f6f6f6;
+    background-color: #383838;
+    color: #fff;
+    transition: all .4s ease-in;
 }
 
 .sidebarChat:hover {
-    background-color: #ededed;
+    background-color: #2a282cba;
+}
+
+.sidebarChat>.MuiAvatar-root {
+    width: 60px;
+    height: 60px;
 }
 
 .info>h2 {
@@ -16,6 +23,14 @@
 
 .info {
     margin-left: 15px;
+}
+
+.info>p {
+    white-space: nowrap;
+    width: 80%;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
 }
 
 a {
@@ -33,13 +48,6 @@ a {
     }
     .info>h2 {
         color: #ffffff;
-    }
-    .info>p {
-        white-space: nowrap;
-        width: 64vw;
-        overflow: hidden;
-        -o-text-overflow: ellipsis;
-        text-overflow: ellipsis;
     }
     .createNewIcon {
         position: absolute !important;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, IconButton } from '@material-ui/core'
-import { DonutLarge, Chat, MoreVert, SearchOutlined } from "@material-ui/icons";
+import { Avatar, IconButton, Popover, Button } from '@material-ui/core'
+import { DonutLarge, Chat, MoreVert, SearchOutlined, Settings, Person, RateReview } from "@material-ui/icons";
 
 import './Sidebar.css';
 import { SidebarChat } from "./SidebarChat";
@@ -11,10 +11,13 @@ export function Sidebar(props) {
     avatar,
     name,
     isMobile,
-    setOpen
+    setOpen,
+    active,
+    setInput,
   } = props
 
   const [rooms, setRooms] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(false);
 
   useEffect(() => {
     db.collection('rooms').onSnapshot(snapshot => (
@@ -25,9 +28,12 @@ export function Sidebar(props) {
       )
     ))
   }, [])
+
+  const id = anchorEl ? 'simple-popover' : undefined;
+
   return (
     <div className='sidebar'>
-      <div className='header'>
+      <div className='sideBarHeader'>
         {/* <Avatar src='https://i.pravatar.cc/300' /> */}
         <div className='headerLeft'>
           <Avatar src={avatar} />
@@ -42,9 +48,36 @@ export function Sidebar(props) {
               <IconButton>
                 <Chat />
               </IconButton>
-              <IconButton>
-                <MoreVert />
+              <IconButton >
+                <MoreVert aria-describedby={id} onClick={(e) => setAnchorEl(e.currentTarget)} />
               </IconButton>
+              <Popover
+                id={id}
+                open={anchorEl}
+                anchorEl={anchorEl}
+                onClose={() => setAnchorEl(false)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+              >
+                <IconButton className='popoverButton'>
+                  <RateReview />
+                  New Room
+                </IconButton>
+                <IconButton className='popoverButton'>
+                  <Person />
+                  Profile
+                </IconButton>
+                <IconButton className='popoverButton'>
+                  <Settings />
+                  Settings
+                </IconButton>
+              </Popover>
             </>
           )}
         </div>
@@ -57,12 +90,16 @@ export function Sidebar(props) {
       </div>
       <div className='chats'>
         <SidebarChat
+          setInput={setInput}
+          active={active}
           addnewChat
           isMobile={isMobile}
           setOpen={setOpen}
         />
         {rooms.map(room => (
           <SidebarChat
+            setInput={setInput}
+            active={active}
             key={room.id}
             id={room.id}
             name={room.data.name}

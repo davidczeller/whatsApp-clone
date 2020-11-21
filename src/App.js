@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './App.css';
 import { Sidebar } from "./Sidebar";
@@ -16,6 +16,7 @@ function App() {
   // const [{ user }, dispatch] = useStateValue(null)
 
   const [user, setUser] = useState(null)
+  const [input, setInput] = useState('')
 
   const signIn = () => {
     auth
@@ -33,6 +34,21 @@ function App() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [open, setOpen] = useState(false)
 
+  // const [active, setActive] = useState(false)
+
+  // const el = document.querySelector('.msgInput')
+
+  // console.log({ active })
+
+  // useEffect(() => {
+  //   if (el && el.value.length > 0 && document.activeElement === el) {
+  //     console.log(el && el.value.length, { active })
+  //     setActive(true)
+  //   } else {
+  //     console.log(el && el.value.length, { active })
+  //     setActive(false)
+  //   }
+  // })
 
   return (
     <div className="app">
@@ -43,6 +59,10 @@ function App() {
             <div className='app_body'>
               <Router>
                 <Sidebar
+                  input={input}
+                  setInput={setInput}
+                  // active={active}
+                  // setActive={setActive}
                   isMobile={isMobile}
                   avatar={user.additionalUserInfo.profile.picture}
                   name={user.additionalUserInfo.profile.given_name}
@@ -50,12 +70,20 @@ function App() {
                 <Switch>
                   <Route path='/rooms/:roomId'>
                     <Chat
+                      input={input}
+                      setInput={setInput}
+                      // setActive={setActive}
+                      // active={active}
                       name={user.additionalUserInfo.profile.name}
                       isMobile={isMobile}
                     />
                   </Route>
                   <Route path='/'>
                     <Chat
+                      input={input}
+                      setInput={setInput}
+                      // setActive={setActive}
+                      // active={active}
                       isMobile={isMobile}
                     />
                   </Route>
@@ -65,6 +93,10 @@ function App() {
           ) : (
               <Router>
                 <Sidebar
+                  input={input}
+                  setInput={setInput}
+                  // setActive={setActive}
+                  // active={active}
                   isMobile={isMobile}
                   setOpen={setOpen}
                   avatar={user.additionalUserInfo.profile.picture}
@@ -74,6 +106,9 @@ function App() {
                 <Switch>
                   <Route path='/rooms/:roomId'>
                     <Chat
+                      input={input}
+                      setInput={setInput}
+                      // setActive={setActive}
                       name={user.additionalUserInfo.profile.name}
                       open={open}
                       isMobile={isMobile}
@@ -82,6 +117,9 @@ function App() {
                   </Route>
                   <Route path='/'>
                     <Chat
+                      input={input}
+                      setInput={setInput}
+                      // setActive={setActive}
                       isMobile={isMobile}
                       setOpen={setOpen}
                     />
