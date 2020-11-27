@@ -2,7 +2,7 @@
     flex: 0.20;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    min-width: 400px;
     border-right: 2px solid #000000;
 }
 
@@ -105,6 +105,7 @@
 @media (max-width: 960px) {
     .sidebar {
         height: 100vh;
+        min-width: unset;
     }
     .sideBarHeader {
         display: flex;
@@ -124,10 +125,11 @@
         justify-content: flex-end !important;
     }
     .chats {
-        background-color: #2b272c;
+        background-color: #29292b;
         margin-bottom: 10vh;
     }
     .search {
-        display: none;
+        width: 100vw;
+        background: none;
     }
 }

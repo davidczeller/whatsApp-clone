@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { Avatar, IconButton } from '@material-ui/core'
+import { Avatar, IconButton, Popover, ClickAwayListener } from '@material-ui/core'
 import {
   DonutLarge,
   AttachFile,
@@ -14,11 +14,17 @@ import {
   VoiceChat,
   PermPhoneMsg,
   Search,
+  GetApp,
+  CloudUpload
 } from '@material-ui/icons'
+import EmojiKeyboard from './EmojiKeyboard'
 
 import db, { myStorage } from './firbase'
 import firebase from 'firebase'
 
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+
+import { Modal } from './Modal'
 import './Chat.css'
 
 export function Chat(props) {
@@ -27,10 +33,12 @@ export function Chat(props) {
     open,
     setOpen,
     isMobile,
-    // active,
-    // setActive,
+    activeRoom,
+    setActiveRoom,
     input,
-    setInput
+    setInput,
+    msgLength,
+    setMsgLength,
   } = props
 
 
@@ -40,6 +48,11 @@ export function Chat(props) {
   const [roomName, setRoomName] = useState('')
   const [messages, setMessages] = useState('')
   const [lastSeen, setLastSeen] = useState('')
+  const [search, setSearch] = useState('')
+  const [filteredMessages, setFilteredMessages] = useState('')
+  const [visible, setVisible] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(false)
+  const [bubble, setBubble] = useState('')
   // const [active, setActive] = useState(false)
 
   const el = document.querySelector('.msgInput')
@@ -55,6 +68,15 @@ export function Chat(props) {
   //     setActive(false)
   //   }
   // })
+
+
+  useEffect(() => {
+    setFilteredMessages(
+      messages && messages.filter(message => {
+        return message.message.toLowerCase().includes(search.toLowerCase())
+      })
+    )
+  }, [search, messages])
 
   useEffect(() => {
     messages && messages.map((msg, idx, arr) => (
@@ -78,19 +100,32 @@ export function Chat(props) {
     }
   }, [roomId])
 
+  // console.log('asdasdasd', messages)
+
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 500))
   }, [roomId])
 
   const sendMessage = (e) => {
     e.preventDefault()
-
-    db.collection('rooms').doc(roomId).collection('messages').add({
-      message: input,
-      name: name,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    })
-    setInput('')
+    if (input.includes('whatsup-clone-7a595.appspot.com')) {
+      console.log('It\'s an image')
+      db.collection('rooms').doc(roomId).collection('messages').add({
+        message: '',
+        url: input,
+        name: name,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      setBubble(input)
+      setInput('')
+    } else {
+      db.collection('rooms').doc(roomId).collection('messages').add({
+        message: input,
+        name: name,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      setInput('')
+    }
   }
 
   let msgEnd = useRef(null);
@@ -100,72 +135,185 @@ export function Chat(props) {
     msgEnd.scrollIntoView({ behavior: "smooth" });
   }
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, anchorEl, visible]);
+
+  const focus = () => {
+    const el = document.querySelector('.searchInput')
+    anchorEl && el && el.focus()
+  }
+
+  // const [active, setActive] = useState(false)
+  // console.log('chat', messages.length, activeRoom)
+  // const [msgLength, setMsgLength] = useState(0)
 
 
-  // const [currentPhotoFile, setCurrentPhotoFile] = useState(null)
-  // let refInput = useRef(null);
+  useEffect(() => {
+    setMsgLength(messages.length)
+    // console.log('Chat', messages.length, msgLength)
+  })
 
-  // const onChoosePhoto = event => {
-  //   if (event.target.files && event.target.files[0]) {
-  //     setCurrentPhotoFile(event.target.files[0])
-  //     // Check this file is an image?
-  //     const prefixFiletype = event.target.files[0].type.toString()
-  //     if (prefixFiletype.indexOf('image/') === 0) {
-  //       uploadPhoto()
-  //     } else {
-  //       console.log('This file is not an image')
-  //     }
-  //   }
-  // }
+  //all messages of all rooms 
+  const [roomCount, setRoomCount] = useState(0)
+  useEffect(() => {
+    db.collection('rooms').get().then(snap => {
+      setRoomCount(snap.size);
+    });
+  })
 
-  // const uploadPhoto = () => {
-  //   const uploadTask = myStorage
-  //     .ref()
-  //     .child()
-  //     .put(currentPhotoFile)
+  const [rooms, setRooms] = useState([])
+  useEffect(() => {
+    db.collection('rooms').onSnapshot(snapshot => (
+      setRooms(snapshot.docs.map(doc => ({
+        id: doc.id,
+        data: doc.data()
+      }))
+      )
+    ))
+  }, [])
 
-  //   uploadTask.on(
-  //     // AppString.UPLOAD_CHANGED,
-  //     // null,
-  //     err => {
-  //       console.log('Something went wrong!')
-  //       // this.setState({isLoading: false})
-  //       // this.props.showToast(0, err.message)
-  //     },
-  //     () => {
-  //       uploadTask.ref().getDownloadURL().then(url => {
-  //         // this.setState({isLoading: false})
-  //         console.log(url)
-  //         // sendMessage(url, 0)
-  //       })
-  //     }
-  //   )
-  //   // })
-  // }
 
-  // const el = document.querySelector('.msgInput')
+  const [qwe, setQwe] = useState([])
+
+
+  useEffect(() => {
+    for (let i = 0; i < roomCount; i++) {
+      db.collection('rooms')
+        .doc(rooms[i].id)
+        .collection('messages')
+        .orderBy('timestamp', 'asc')
+        .onSnapshot(snapshot => {
+          setQwe(snapshot.docs.length)
+        })
+    }
+  }, [])
+
+
+  //active room id
+  useEffect(() => {
+    console.log('Active Room: ', activeRoom)
+  }, [activeRoom])
+
+
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  //room !== active && ( 
+  //usEffect (()=> {
+  //setDot(visible)
+  //}, [messages.length])
+  //) else setDot(!visible)
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+
+  //ScrollButton
+
+  // const [scrollButton, setScrollButton] = useState(false);
+
+  // const [scrollPositionY, setScrollPositionY] = useState(null);
+
+  // const element = document.querySelectorAll('.body')
 
   // useEffect(() => {
-  //   if (el && el.value.length > 0 && document.activeElement === el) {
-  //     console.log(el && el.value.length, { active })
-  //     window.scrollTo(0, 1000);
-  //     setActive(true)
-  //   } else {
-  //     console.log(el && el.value.length, { active })
-  //     setActive(false)
-  //   }
-  // })
+  //   window.addEventListener("scroll", updateScrollPosition);
+
+  //   return () => window.removeEventListener("scroll", updateScrollPosition);
+  // }, []);
+
+  // const updateScrollPosition = ev => {
+  //   setScrollPositionY(window.scrollY);
+  // };
+
+  // console.log(element && element.scrollLeft, element && element.scrollTop);
+
+
+  // console.log(element && element, scrollPositionY)
+
+  //style={{ display: scrollPositionY < 100 ? 'block' : 'none' }}
+
+  const id = anchorEl ? 'simple-popover' : undefined;
+
+  //emojiKeyboard
+  const [emojiOpen, setEmojiOpen] = useState(null);
+
+
+  //file upload 
+  const [image, setImage] = useState(null)
+  const [url, setUrl] = useState('')
+  const [error, setError] = useState('')
+  const [progress, setProgress] = useState(0)
+
+  const handleFileChange = e => {
+    const file = e.target.files[0]
+    if (file) {
+      const fileType = file['type']
+      const validImageTypes = ['image/png', 'image/gif', 'image/jpeg', 'image/svg', 'image/jpg']
+      if (validImageTypes.includes(fileType)) {
+        setError('')
+        setImage(file)
+        setIsDisabled(false)
+      } else {
+        setError('Error: wrong filetype')
+      }
+    } else {
+      setError('Error: no file')
+    }
+  }
+
+  const handleFileUpdate = () => {
+    if (image) {
+      // setIsDisabled(false)
+      const uploadTask = myStorage.ref(`images/${image.name}`).put(image)
+
+      uploadTask.on(
+        'state_changed',
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransfered / snapshot.totalBytes) * 100
+          )
+          setProgress(progress)
+        },
+        error => {
+          setError(error)
+        },
+        () => {
+          myStorage.ref('images').child(image.name).getDownloadURL().then(url => {
+            setUrl(url)
+            setInput(url)
+            setProgress(0)
+            setIsDisabled(true)
+          })
+        }
+      )
+    } else {
+      setError('Error: no Image')
+    }
+  }
+
+  const [isDisabled, setIsDisabled] = useState(true)
+
+  useEffect(() => {
+    const disabledButton = (x) => {
+      x ? setIsDisabled(false) : setIsDisabled(true)
+    }
+  }, [isDisabled])
+
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [urls, setUrls] = React.useState([])
 
   return (
     <div
       className={isMobile ? 'chatMobile' : 'chat'}
       style={{ opacity: isMobile && open ? 1 : 0, pointerEvents: isMobile && open ? 'all' : 'none' }}
     >
+      {/* <Modal
+        isOpen={modalOpen}
+        setIsOpen={setModalOpen}
+      /> */}
       <div style={{ position: 'relative' }}>
         <div className={'header'}>
           {isMobile &&
-            <ArrowBackIos onClick={() => setOpen(false)} style={{ margin: '0 12px' }} />
+            <>
+              <ArrowBackIos onClick={() => setOpen(false)} style={{ margin: '0 12px' }} />
+            </>
           }
           <Avatar src={`https://source.unsplash.com/random/200x200?sig=${seed}`} />
           <div className='info'>
@@ -175,17 +323,63 @@ export function Chat(props) {
               {lastSeen && lastSeen.substring(15, 21)}
             </p>
           </div>
-          {!isMobile &&
+          {!isMobile ? (
             <div className='headerRight'>
-              <IconButton>
-                <Search />
-              </IconButton>
+              <ClickAwayListener
+                onClickAway={() => (
+                  setSearch(''),
+                  visible && setVisible(false)
+                )}
+              >
+                <div>
+                  <input
+                    style={{
+                      width: visible ? '240px' : 0,
+                      paddingLeft: visible ? '12px' : 0,
+                      paddingRight: visible ? '12px' : 0
+                    }}
+                    className='desktopSearch'
+                    placeholder='Search in Conversation...'
+                    type='text'
+                    onChange={e => setSearch(e.target.value)}
+                  />
+                  <IconButton>
+                    <Search
+                      aria-describedby={id}
+                      onClick={
+                        // () => setVisible(true)
+                        () => (setVisible((prev) => !prev), focus())
+
+                        // (e) => (
+                        // console.log(e.currentTarget),
+                        // setAnchorEl(e.currentTarget),
+                        // e.preventDefault(),
+                        // focus()
+                        // )
+                      }
+                    />
+                  </IconButton>
+                </div>
+              </ClickAwayListener>
               <IconButton>
                 <MoreVert />
               </IconButton>
             </div>
-            // ) : (
-
+          ) : (
+              <div className='headerRight'>
+                <IconButton>
+                  <Search
+                    aria-describedby={id}
+                    onClick={
+                      (e) => (
+                        setAnchorEl(e.currentTarget),
+                        focus()
+                      )
+                    }
+                  />
+                </IconButton>
+              </div>
+            )
             // <>
             //   <IconButton>
             //     <PermPhoneMsg style={{ color: '#9fd0c6' }} />
@@ -202,47 +396,93 @@ export function Chat(props) {
             // </>
             // )
           }
+          <Popover
+            className='searchBar'
+            id={id}
+            open={anchorEl}
+            anchorEl={anchorEl}
+            onClose={() => (setAnchorEl(false), setSearch(''))}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            <input
+              className='searchInput'
+              placeholder='Search...'
+              type='text'
+              onChange={e => setSearch(e.target.value)}
+            />
+          </Popover>
         </div>
       </div>
       <div className='body'>
-        {messages && messages.map((message, idx) => (
-          <p key={idx + 1} className={`chatMsg ${message.name === name && 'reciever'}`}>
-            <span className='chatName'>
-              {message.name}
-            </span>
-            {message.message}
-            <span className='timestamp'>
-              {!isMobile ? (
-                new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
-              ) : (
-                  new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
-                )
-              }
-            </span>
-          </p>
-        ))}
-        {/* <p className={`chatMsg`}>
-            <span className='chatName'>
-              {message.name}
-            </span>
-            {message.message}
-            <span className='timestamp'>
-              {new Date(message.timestamp && message.timestamp.toDate()).toUTCString()}
-            </span>
-          </p> */}
-        {/* {active && ( */}
-        {/* )} */}
+        {search !== '' ? (
+          filteredMessages.map((message, idx) => (
+            <p key={idx + 1} className={`chatMsg ${message.name === name && 'reciever'}`}>
+              {message.message}
+            </p>
+          ))) : (
+            messages && messages.map((message, idx) => (
+              <>
+                {message.url && (
+                  <>
+                    <Modal
+                      isOpen={modalOpen}
+                      setIsOpen={setModalOpen}
+                      url={message.url}
+                      idx={idx}
+                    />
+                    <div
+                      onClick={() => setModalOpen(!modalOpen)}
+                      style={{ backgroundImage: `url(${message.url})` }}
+                      className={`imageBubble ${message.name === name && 'reciever'}`}
+                    />
+                  </>
+                )}
+                <p key={idx + 1} className={`chatMsg ${message.name === name && 'reciever'} `}>
+                  <span className='chatName'>
+                    {message.name}
+                  </span>
+                  {message.message}
+                  <span className='timestamp'>
+                    {!isMobile ? (
+                      new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
+                    ) : (
+                        new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
+                      )
+                    }
+                  </span>
+                </p>
+              </>
+            )
+            ))
+        }
         <div
           style={{ float: "left", clear: "both" }}
           ref={el => msgEnd = el}
         >
         </div>
-        {/* <div className={`active ${active && 'visible'}`}>
-          ...
-          </div> */}
       </div>
       <div className='footer'>
-        <InsertEmoticon style={{ color: '#444' }} />
+        {/* // */}
+        <div>
+          <div className='imageUploadContainer'>
+            <input type='file' onChange={handleFileChange} className='custom-file-input' />
+            <IconButton onClick={handleFileUpdate}>
+              <CloudUpload style={{ color: isDisabled ? '#444' : '#fff' }} />
+            </IconButton>
+          </div>
+          {progress > 0 ? <progress value={progress} max='100' /> : ''}
+          <div>{error}</div>
+        </div>
+        {/* // */}
+        <InsertEmoticon style={{ color: '#fff' }} onClick={() => setEmojiOpen(!emojiOpen)} />
+        <EmojiKeyboard emojiOpen={emojiOpen} />
         <form>
           <input
             className='msgInput'
@@ -259,9 +499,6 @@ export function Chat(props) {
           <>
             <IconButton onClick={sendMessage}>
               <Send style={{ color: '#fff' }} />
-            </IconButton>
-            <IconButton>
-              <CameraAlt style={{ color: '#444' }} />
             </IconButton>
           </>
         ) : (

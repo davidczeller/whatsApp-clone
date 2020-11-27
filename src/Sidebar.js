@@ -12,12 +12,17 @@ export function Sidebar(props) {
     name,
     isMobile,
     setOpen,
-    active,
+    activeRoom,
+    setActiveRoom,
     setInput,
+    msgLength,
+    setMsgLength,
   } = props
 
   const [rooms, setRooms] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(false)
+  const [search, setSearch] = useState('')
+  const [filteredChats, setFilteredChats] = useState('')
 
   useEffect(() => {
     db.collection('rooms').onSnapshot(snapshot => (
@@ -29,7 +34,17 @@ export function Sidebar(props) {
     ))
   }, [])
 
+  
+
   const id = anchorEl ? 'simple-popover' : undefined;
+
+  useEffect(() => {
+    setFilteredChats(
+      rooms.filter(chat => {
+        return chat.data.name.toLowerCase().includes(search.toLowerCase())
+      })
+    )
+  }, [search, rooms])
 
   return (
     <div className='sidebar'>
@@ -85,28 +100,73 @@ export function Sidebar(props) {
       <div className='search'>
         <div className='searchContainer'>
           <SearchOutlined />
-          <input placeholder='Search or start new chat...' type='text' />
+          <input placeholder='Search...' type='text' onChange={e => setSearch(e.target.value)} />
         </div>
       </div>
       <div className='chats'>
         <SidebarChat
           setInput={setInput}
-          active={active}
           addnewChat
           isMobile={isMobile}
           setOpen={setOpen}
+          setActiveRoom={setActiveRoom}
+          activeRoom={activeRoom}
+          msgLength={msgLength}
+          setMsgLength={setMsgLength}
         />
-        {rooms.map(room => (
+        {search !== '' ? (
+          filteredChats.map((room, idx) => (
+            <SidebarChat
+              setInput={setInput}
+              setActiveRoom={setActiveRoom}
+              activeRoom={activeRoom}
+              msgLength={msgLength}
+              setMsgLength={setMsgLength}
+              // key={room.id}
+              id={room.id}
+              name={room.data.name}
+              isMobile={isMobile}
+              setOpen={setOpen}
+              key={idx}
+              {...room}
+            />
+            // <SidebarChat
+            //   setInput={setInput}
+            //   activeRoom={activeRoom}
+            //   key={room.id}
+            //   id={room.id}
+            //   name={room.data.name}
+            //   isMobile={isMobile}
+            //   setOpen={setOpen}
+            // />
+          ))
+        ) : (
+            rooms.map(room => (
+              <SidebarChat
+                setInput={setInput}
+                setActiveRoom={setActiveRoom}
+                activeRoom={activeRoom}
+                msgLength={msgLength}
+                setMsgLength={setMsgLength}
+                key={room.id}
+                id={room.id}
+                name={room.data.name}
+                isMobile={isMobile}
+                setOpen={setOpen}
+              />
+            ))
+          )}
+        {/* {rooms.map(room => (
           <SidebarChat
             setInput={setInput}
-            active={active}
+            activeRoom={activeRoom}
             key={room.id}
             id={room.id}
             name={room.data.name}
             isMobile={isMobile}
             setOpen={setOpen}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   )

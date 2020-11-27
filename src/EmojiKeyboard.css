@@ -1,0 +1,18 @@
+.emojiContainer {
+  position: absolute;
+  bottom: 63px;
+  width: 100%;
+  left: 0;
+}
+
+aside.emoji-picker-react {
+  background: #383838 ;
+  box-shadow: none ;
+  width: 100% ;
+  border: none ;
+}
+
+.emoji-picker-react .emoji-group:before{
+  background: #383838;
+  color: #fff;
+}

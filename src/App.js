@@ -50,6 +50,10 @@ function App() {
   //   }
   // })
 
+  const [activeRoom, setActiveRoom] = useState(null)
+  const [msgLength, setMsgLength] = useState(0)
+
+
   return (
     <div className="app">
       {!user ? (
@@ -61,8 +65,10 @@ function App() {
                 <Sidebar
                   input={input}
                   setInput={setInput}
-                  // active={active}
-                  // setActive={setActive}
+                  activeRoom={activeRoom}
+                  setActiveRoom={setActiveRoom}
+                  msgLength={msgLength}
+                  setMsgLength={setMsgLength}
                   isMobile={isMobile}
                   avatar={user.additionalUserInfo.profile.picture}
                   name={user.additionalUserInfo.profile.given_name}
@@ -72,8 +78,10 @@ function App() {
                     <Chat
                       input={input}
                       setInput={setInput}
-                      // setActive={setActive}
-                      // active={active}
+                      setActiveRoom={setActiveRoom}
+                      msgLength={msgLength}
+                      setMsgLength={setMsgLength}
+                      activeRoom={activeRoom}
                       name={user.additionalUserInfo.profile.name}
                       isMobile={isMobile}
                     />
@@ -82,8 +90,10 @@ function App() {
                     <Chat
                       input={input}
                       setInput={setInput}
-                      // setActive={setActive}
-                      // active={active}
+                      setActiveRoom={setActiveRoom}
+                      msgLength={msgLength}
+                      setMsgLength={setMsgLength}
+                      activeRoom={activeRoom}
                       isMobile={isMobile}
                     />
                   </Route>
@@ -95,8 +105,10 @@ function App() {
                 <Sidebar
                   input={input}
                   setInput={setInput}
-                  // setActive={setActive}
-                  // active={active}
+                  setActiveRoom={setActiveRoom}
+                  msgLength={msgLength}
+                  setMsgLength={setMsgLength}
+                  activeRoom={activeRoom}
                   isMobile={isMobile}
                   setOpen={setOpen}
                   avatar={user.additionalUserInfo.profile.picture}
@@ -108,7 +120,10 @@ function App() {
                     <Chat
                       input={input}
                       setInput={setInput}
-                      // setActive={setActive}
+                      setActiveRoom={setActiveRoom}
+                      msgLength={msgLength}
+                      setMsgLength={setMsgLength}
+                      activeRoom={activeRoom}
                       name={user.additionalUserInfo.profile.name}
                       open={open}
                       isMobile={isMobile}
@@ -119,7 +134,10 @@ function App() {
                     <Chat
                       input={input}
                       setInput={setInput}
-                      // setActive={setActive}
+                      setActiveRoom={setActiveRoom}
+                      msgLength={msgLength}
+                      setMsgLength={setMsgLength}
+                      activeRoom={activeRoom}
                       isMobile={isMobile}
                       setOpen={setOpen}
                     />

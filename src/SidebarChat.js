@@ -15,8 +15,11 @@ export function SidebarChat({
   addnewChat,
   isMobile,
   setOpen,
-  active,
-  setInput
+  activeRoom,
+  setActiveRoom,
+  setInput,
+  msgLength,
+  setMsgLength,
 }) {
 
   const [seed, setSeed] = useState('');
@@ -32,6 +35,8 @@ export function SidebarChat({
         ))
     }
   }, [id])
+
+  // console.log({id})
 
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
@@ -49,9 +54,24 @@ export function SidebarChat({
 
   const el = document.querySelector('.msgInput')
 
+  // const [msgLength, setMsgLength] = useState(0)
+
+  // useEffect(() =>{
+  //   setMsgLength(messages.length)
+  //   console.log('Room Changed!',messages.length, msgLength)
+  // }, [])
+ 
+
   return !addnewChat ? (
     isMobile ? (
-      <Link to={`/rooms/${id}`} className='sidebarChat' onClick={() => (setOpen(true), setInput(''))}>
+      <Link to={`/rooms/${id}`} className='sidebarChat'
+        onClick={() => (
+          setOpen(true),
+          setInput(''),
+          setActiveRoom(id),
+          setMsgLength(messages)
+        )}
+      >
         <Avatar src={`https://source.unsplash.com/random/200x200?sig=${seed}`} />
         <div className='info'>
           <h2>{name}</h2>
@@ -63,7 +83,12 @@ export function SidebarChat({
         </div>
       </Link>
     ) : (
-        <Link to={`/rooms/${id}`} onClick={() => setInput('')}>
+        <Link to={`/rooms/${id}`}
+          onClick={() => (
+            setInput(''),
+            setActiveRoom(id)
+          )}
+        >
           <div className='sidebarChat'>
             <Avatar src={`https://source.unsplash.com/random/200x200?sig=${seed}`} />
             <div className='info'>

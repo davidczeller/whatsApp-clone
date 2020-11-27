@@ -1,0 +1,41 @@
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.paper>.MuiButton-root {
+  font-size: 1.2rem;
+  color: #fff;
+  text-transform: inherit !important;
+  border: 1px solid;
+  padding: 12px;
+  transition: all .4s;
+}
+
+.paper>.MuiButton-root:hover {
+  border: 1px solid #fff;
+  color: #fff;
+  border-radius: 16px;
+}
+
+.MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.paper>.MuiIconButton-root {
+  font-size: 1.2rem;
+  color: #fff;
+  padding: 12px;
+  transition: all .4s;
+  position: absolute;
+  top: 1vh;
+  right: 1vw;
+  cursor: pointer;
+}
