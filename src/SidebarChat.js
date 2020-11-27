@@ -20,6 +20,7 @@ export function SidebarChat({
   setInput,
   msgLength,
   setMsgLength,
+  user,
 }) {
 
   const [seed, setSeed] = useState('');
@@ -60,7 +61,13 @@ export function SidebarChat({
   //   setMsgLength(messages.length)
   //   console.log('Room Changed!',messages.length, msgLength)
   // }, [])
- 
+  const userFullName = user.additionalUserInfo.profile.name
+  const senderFullName = messages.length && messages[0].name
+  const senderFirstName = senderFullName && senderFullName.split(' ')
+  const userName = userFullName === senderFullName
+    ? ('You ')
+    : (senderFirstName[0]);
+
 
   return !addnewChat ? (
     isMobile ? (
@@ -76,7 +83,11 @@ export function SidebarChat({
         <div className='info'>
           <h2>{name}</h2>
           {messages.length ? (
-            <p>{messages[0].message}</p>
+            messages[0].message !== '' ? (
+              <p>{messages[0].message}</p>
+            ) : (
+                <p>{userName} sent a Photo</p>
+              )
           ) : (
               <p>No messages yet...</p>
             )}
@@ -94,7 +105,11 @@ export function SidebarChat({
             <div className='info'>
               <h2>{name}</h2>
               {messages.length ? (
-                <p>{messages.length && messages[0].message}</p>
+                messages[0].message !== '' ? (
+                  <p>{messages.length && messages[0].message}</p>
+                ) : (
+                    <p>{userName} sent a Photo</p>
+                  )
               ) : (
                   <p>No messages yet...</p>
                 )}

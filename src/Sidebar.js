@@ -17,6 +17,7 @@ export function Sidebar(props) {
     setInput,
     msgLength,
     setMsgLength,
+    user,
   } = props
 
   const [rooms, setRooms] = useState([]);
@@ -34,7 +35,7 @@ export function Sidebar(props) {
     ))
   }, [])
 
-  
+
 
   const id = anchorEl ? 'simple-popover' : undefined;
 
@@ -105,6 +106,7 @@ export function Sidebar(props) {
       </div>
       <div className='chats'>
         <SidebarChat
+          user={user}
           setInput={setInput}
           addnewChat
           isMobile={isMobile}
@@ -117,6 +119,7 @@ export function Sidebar(props) {
         {search !== '' ? (
           filteredChats.map((room, idx) => (
             <SidebarChat
+              user={user}
               setInput={setInput}
               setActiveRoom={setActiveRoom}
               activeRoom={activeRoom}
@@ -131,6 +134,7 @@ export function Sidebar(props) {
               {...room}
             />
             // <SidebarChat
+            // user = { user }
             //   setInput={setInput}
             //   activeRoom={activeRoom}
             //   key={room.id}
@@ -143,6 +147,7 @@ export function Sidebar(props) {
         ) : (
             rooms.map(room => (
               <SidebarChat
+                user={user}
                 setInput={setInput}
                 setActiveRoom={setActiveRoom}
                 activeRoom={activeRoom}
@@ -158,6 +163,7 @@ export function Sidebar(props) {
           )}
         {/* {rooms.map(room => (
           <SidebarChat
+                  user={user}          
             setInput={setInput}
             activeRoom={activeRoom}
             key={room.id}

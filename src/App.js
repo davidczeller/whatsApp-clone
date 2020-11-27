@@ -63,6 +63,7 @@ function App() {
             <div className='app_body'>
               <Router>
                 <Sidebar
+                  user={user}
                   input={input}
                   setInput={setInput}
                   activeRoom={activeRoom}
@@ -103,6 +104,7 @@ function App() {
           ) : (
               <Router>
                 <Sidebar
+                  user={user}                
                   input={input}
                   setInput={setInput}
                   setActiveRoom={setActiveRoom}

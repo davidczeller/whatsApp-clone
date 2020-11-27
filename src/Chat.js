@@ -429,7 +429,7 @@ export function Chat(props) {
           ))) : (
             messages && messages.map((message, idx) => (
               <>
-                {message.url && (
+                {message.url ? (
                   <>
                     <Modal
                       isOpen={modalOpen}
@@ -443,21 +443,22 @@ export function Chat(props) {
                       className={`imageBubble ${message.name === name && 'reciever'}`}
                     />
                   </>
-                )}
-                <p key={idx + 1} className={`chatMsg ${message.name === name && 'reciever'} `}>
-                  <span className='chatName'>
-                    {message.name}
-                  </span>
-                  {message.message}
-                  <span className='timestamp'>
-                    {!isMobile ? (
-                      new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
-                    ) : (
-                        new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
-                      )
-                    }
-                  </span>
-                </p>
+                ) : (
+                    <p key={idx + 1} className={`chatMsg ${message.name === name && 'reciever'} `}>
+                      <span className='chatName'>
+                        {message.name}
+                      </span>
+                      {message.message}
+                      <span className='timestamp'>
+                        {!isMobile ? (
+                          new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
+                        ) : (
+                            new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
+                          )
+                        }
+                      </span>
+                    </p>
+                  )}
               </>
             )
             ))
