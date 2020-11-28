@@ -65,7 +65,7 @@ export function SidebarChat({
   const senderFullName = messages.length && messages[0].name
   const senderFirstName = senderFullName && senderFullName.split(' ')
   const userName = userFullName === senderFullName
-    ? ('You ')
+    ? ('You')
     : (senderFirstName[0]);
 
 
@@ -84,7 +84,11 @@ export function SidebarChat({
           <h2>{name}</h2>
           {messages.length ? (
             messages[0].message !== '' ? (
-              <p>{messages[0].message}</p>
+              messages[0].url === '' ? (
+                <p>{userName}:&nbsp;{messages[0].message}</p>
+              ) : (
+                  <p>{userName} sent an Attachement</p>
+                )
             ) : (
                 <p>{userName} sent a Photo</p>
               )
@@ -106,7 +110,7 @@ export function SidebarChat({
               <h2>{name}</h2>
               {messages.length ? (
                 messages[0].message !== '' ? (
-                  <p>{messages.length && messages[0].message}</p>
+                  <p>{userName}:&nbsp;{messages.length && messages[0].message}</p>
                 ) : (
                     <p>{userName} sent a Photo</p>
                   )

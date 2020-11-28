@@ -17,15 +17,16 @@ import {
   GetApp,
   CloudUpload
 } from '@material-ui/icons'
+
 import EmojiKeyboard from './EmojiKeyboard'
 
 import db, { myStorage } from './firbase'
 import firebase from 'firebase'
-
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 import { Modal } from './Modal'
 import './Chat.css'
+
 
 export function Chat(props) {
   const {
@@ -40,7 +41,6 @@ export function Chat(props) {
     msgLength,
     setMsgLength,
   } = props
-
 
   const [seed, setSeed] = useState('')
   // const [input, setInput] = useState('')
@@ -100,16 +100,32 @@ export function Chat(props) {
     }
   }, [roomId])
 
-  // console.log('asdasdasd', messages)
-
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 500))
   }, [roomId])
 
+
   const sendMessage = (e) => {
     e.preventDefault()
-    if (input.includes('whatsup-clone-7a595.appspot.com')) {
-      console.log('It\'s an image')
+
+    if (input.includes('youtube.com/watch')) {
+      const videoID = input.includes('https://')
+        ? input.slice(32, 43)
+        : input.slice(21, 32)
+
+      videoID && db.collection('rooms').doc(roomId).collection('messages').add({
+        message: input,
+        url: `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`,
+        name: name,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      setInput('')
+    } else if (input.includes('whatsup-clone-7a595.appspot.com')
+      || input.includes('png')
+      || input.includes('jpg')
+      || input.includes('gif')
+      || input.includes('jpeg')
+      || input.includes('svg')) {
       db.collection('rooms').doc(roomId).collection('messages').add({
         message: '',
         url: input,
@@ -234,7 +250,6 @@ export function Chat(props) {
   //emojiKeyboard
   const [emojiOpen, setEmojiOpen] = useState(null);
 
-
   //file upload 
   const [image, setImage] = useState(null)
   const [url, setUrl] = useState('')
@@ -249,6 +264,7 @@ export function Chat(props) {
       if (validImageTypes.includes(fileType)) {
         setError('')
         setImage(file)
+        // image && handleFileUpdate()
         setIsDisabled(false)
       } else {
         setError('Error: wrong filetype')
@@ -260,14 +276,13 @@ export function Chat(props) {
 
   const handleFileUpdate = () => {
     if (image) {
-      // setIsDisabled(false)
       const uploadTask = myStorage.ref(`images/${image.name}`).put(image)
 
       uploadTask.on(
         'state_changed',
         snapshot => {
           const progress = Math.round(
-            (snapshot.bytesTransfered / snapshot.totalBytes) * 100
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           )
           setProgress(progress)
         },
@@ -277,7 +292,15 @@ export function Chat(props) {
         () => {
           myStorage.ref('images').child(image.name).getDownloadURL().then(url => {
             setUrl(url)
-            setInput(url)
+            // setInput(url)
+            db.collection('rooms').doc(roomId).collection('messages').add({
+              message: '',
+              url: url,
+              name: name,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            })
+            setBubble(url)
+            setInput('')
             setProgress(0)
             setIsDisabled(true)
           })
@@ -291,7 +314,7 @@ export function Chat(props) {
   const [isDisabled, setIsDisabled] = useState(true)
 
   useEffect(() => {
-    const disabledButton = (x) => {
+    const disabledUploadButton = (x) => {
       x ? setIsDisabled(false) : setIsDisabled(true)
     }
   }, [isDisabled])
@@ -304,10 +327,6 @@ export function Chat(props) {
       className={isMobile ? 'chatMobile' : 'chat'}
       style={{ opacity: isMobile && open ? 1 : 0, pointerEvents: isMobile && open ? 'all' : 'none' }}
     >
-      {/* <Modal
-        isOpen={modalOpen}
-        setIsOpen={setModalOpen}
-      /> */}
       <div style={{ position: 'relative' }}>
         <div className={'header'}>
           {isMobile &&
@@ -323,7 +342,7 @@ export function Chat(props) {
               {lastSeen && lastSeen.substring(15, 21)}
             </p>
           </div>
-          {!isMobile ? (
+          {/* {!isMobile ? ( */}
             <div className='headerRight'>
               <ClickAwayListener
                 onClickAway={() => (
@@ -365,21 +384,21 @@ export function Chat(props) {
                 <MoreVert />
               </IconButton>
             </div>
-          ) : (
-              <div className='headerRight'>
-                <IconButton>
-                  <Search
-                    aria-describedby={id}
-                    onClick={
-                      (e) => (
-                        setAnchorEl(e.currentTarget),
-                        focus()
-                      )
-                    }
-                  />
-                </IconButton>
-              </div>
-            )
+          {/* // ) : (
+          //     <div className='headerRight'>
+          //       <IconButton>
+          //         <Search
+          //           aria-describedby={id}
+          //           onClick={
+          //             (e) => (
+          //               setAnchorEl(e.currentTarget),
+          //               focus()
+          //             )
+          //           }
+          //         />
+          //       </IconButton>
+          //     </div>
+          //   )
             // <>
             //   <IconButton>
             //     <PermPhoneMsg style={{ color: '#9fd0c6' }} />
@@ -395,29 +414,29 @@ export function Chat(props) {
             // </IconButton>
             // </>
             // )
-          }
-          <Popover
-            className='searchBar'
-            id={id}
-            open={anchorEl}
-            anchorEl={anchorEl}
-            onClose={() => (setAnchorEl(false), setSearch(''))}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <input
-              className='searchInput'
-              placeholder='Search...'
-              type='text'
-              onChange={e => setSearch(e.target.value)}
-            />
-          </Popover>
+          // }
+          // <Popover
+          //   className='searchBar'
+          //   id={id}
+          //   open={anchorEl}
+          //   anchorEl={anchorEl}
+          //   onClose={() => (setAnchorEl(false), setSearch(''))}
+          //   anchorOrigin={{
+          //     vertical: 'bottom',
+          //     horizontal: 'left',
+          //   }}
+          //   transformOrigin={{
+          //     vertical: 'top',
+          //     horizontal: 'right',
+          //   }}
+          // >
+          //   <input
+          //     className='searchInput'
+          //     placeholder='Search...'
+          //     type='text'
+          //     onChange={e => setSearch(e.target.value)}
+          //   />
+          // </Popover> */}
         </div>
       </div>
       <div className='body'>
@@ -428,27 +447,39 @@ export function Chat(props) {
             </p>
           ))) : (
             messages && messages.map((message, idx) => (
-              <>
+              <div className={`chatBubble ${message.name === name && 'reciever'} `}>
+                <span className={`chatName ${message.name === name && 'reciever'} `}>
+                  {message.name.split(' ')[0]}
+                </span>
                 {message.url ? (
-                  <>
-                    <Modal
-                      isOpen={modalOpen}
-                      setIsOpen={setModalOpen}
-                      url={message.url}
-                      idx={idx}
-                    />
-                    <div
-                      onClick={() => setModalOpen(!modalOpen)}
-                      style={{ backgroundImage: `url(${message.url})` }}
-                      className={`imageBubble ${message.name === name && 'reciever'}`}
-                    />
-                  </>
+                  message.message ? (
+                    <a href={message.message} target='_blank'>
+                      <div
+                        style={{ backgroundImage: `url(${message.url})` }}
+                        className={`imageBubble ${message.name === name && 'reciever'}`}
+                      />
+                      <a href={input.includes('https://') ? message.message : `https://www.${message.message}`} target='_blank' className='videoLink'>
+                        <p className='videoLink'>{message.message}</p>
+                      </a>
+                    </a>
+                  ) : (
+                      <>
+                        <Modal
+                          isOpen={modalOpen}
+                          setIsOpen={setModalOpen}
+                          url={message.url}
+                          idx={idx}
+                        />
+                        <div
+                          onClick={() => setModalOpen(!modalOpen)}
+                          style={{ backgroundImage: `url(${message.url})` }}
+                          className={`imageBubble ${message.name === name && 'reciever'}`}
+                        />
+                      </>
+                    )
                 ) : (
-                    <p key={idx + 1} className={`chatMsg ${message.name === name && 'reciever'} `}>
-                      <span className='chatName'>
-                        {message.name}
-                      </span>
-                      {message.message}
+                    <p key={idx + 1}>
+                      {message.message.replace(/(\w{12})(?=\w)/g, '$1 ')}
                       <span className='timestamp'>
                         {!isMobile ? (
                           new Date(message.timestamp && message.timestamp.toDate()).toUTCString()
@@ -459,7 +490,7 @@ export function Chat(props) {
                       </span>
                     </p>
                   )}
-              </>
+              </div>
             )
             ))
         }
@@ -470,18 +501,25 @@ export function Chat(props) {
         </div>
       </div>
       <div className='footer'>
-        {/* // */}
         <div>
           <div className='imageUploadContainer'>
-            <input type='file' onChange={handleFileChange} className='custom-file-input' />
-            <IconButton onClick={handleFileUpdate}>
-              <CloudUpload style={{ color: isDisabled ? '#444' : '#fff' }} />
-            </IconButton>
+            {!image ? (
+              <input
+                type='file'
+                onChange={handleFileChange}
+                className='custom-file-input'
+              />
+            ) : (
+                <IconButton onClick={handleFileUpdate}>
+                  <CloudUpload
+                    style={{ color: isDisabled ? '#444' : '#fff' }}
+                  />
+                </IconButton>
+              )}
           </div>
           {progress > 0 ? <progress value={progress} max='100' /> : ''}
           <div>{error}</div>
         </div>
-        {/* // */}
         <InsertEmoticon style={{ color: '#fff' }} onClick={() => setEmojiOpen(!emojiOpen)} />
         <EmojiKeyboard emojiOpen={emojiOpen} />
         <form>

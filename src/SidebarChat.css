@@ -27,7 +27,7 @@
 
 .info>p {
     white-space: nowrap;
-    width: 80%;
+    max-width: 240px;
     overflow: hidden;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;

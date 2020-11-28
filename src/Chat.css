@@ -86,17 +86,21 @@
   padding-bottom: 0;
 }
 
-.chatMsg {
+.chatBubble {
   position: relative;
   font-size: 16px;
-  padding: 10px;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 16px;
+  width: -moz-fit-content;
   width: fit-content;
   margin-bottom: 16px;
   max-width: 60%;
   min-width: 80px;
-  overflow: scroll;
+}
+
+.chatBubble>p {
+  padding: 10px;
+  overflow-x: scroll;
 }
 
 .active {
@@ -120,7 +124,9 @@
   top: -15px;
   white-space: nowrap;
   font-size: x-small;
-  color: #fff;
+  max-width: 300px;
+  color: #dcf8c6;
+  background-color: #dcf8c600 !important;
 }
 
 .reciever {
@@ -170,6 +176,21 @@
   color: gray;
 }
 
+progress {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  height: 4px;
+}
+
+progress[value]::-webkit-progress-value {
+  background-color: #3c143a;
+  background-size: 35px 20px, 100% 100%, 100% 100%;
+}
+
 .searchBar>.MuiPopover-paper {
   width: 240px;
 }
@@ -208,17 +229,16 @@
 
 .imageBubble {
   max-height: 450px;
-  min-height: 300px;
+  min-height: 320px;
   width: -moz-fit-content;
-  width: 300px;
+  width: 100%;
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  background-size: 100% 100%;
   position: relative;
   border-radius: 10px;
-  margin-bottom: 16px;
+  /* margin-bottom: 16px; */
   max-width: 300px;
-  min-width: 24px;
+  min-width: 360px;
   background-color: #383838 !important;
   cursor: pointer;
 }
@@ -228,9 +248,19 @@
   align-items: baseline;
 }
 
+.videoLink {
+  padding: 0 16px;
+  padding-top: 0;
+  white-space: nowrap;
+  max-width: 340px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: underline !important;
+}
+
 .custom-file-input {
   color: transparent;
-  width: 24px;
+  width: 40px;
 }
 
 .custom-file-input::-webkit-file-upload-button {
@@ -239,13 +269,21 @@
 
 .custom-file-input::before {
   content: '';
-  display: inline-block;
-  outline: none;
   white-space: nowrap;
-  -webkit-user-select: none;
-  cursor: pointer;
   background: url(https://img.icons8.com/material/24/ffffff/camera.png) no-repeat;
-  border: none;
+  border: 0;
+  cursor: pointer;
+  margin: 0;
+  display: inline-flex;
+  outline: 0;
+  position: relative;
+  align-items: center;
+  border-radius: 0;
+  vertical-align: middle;
+  justify-content: center;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-tap-highlight-color: transparent;
   flex: 0 0 auto;
   color: rgba(0, 0, 0, 0.54);
   padding: 12px;
@@ -290,5 +328,17 @@
   }
   .reciever {
     background-color: #9fd0c6;
+  }
+  .imageBubble {
+    min-height: 180px;
+    min-width: 220px;
+  }
+  .chatBubble {
+    max-width: 64%;
+  }
+  .headerRight>div>.desktopSearch {
+    position: absolute;
+    right: 106px;
+    top: 1.7vh;
   }
 }
