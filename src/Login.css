@@ -55,7 +55,9 @@
         justify-content: center;
     }
     .container>img {
-        height: 64px;
+        height: 100px;
+        width: 100px;
+        align-self: center;
     }
     .text {
         font-size: 1rem;
