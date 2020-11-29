@@ -22,6 +22,8 @@ export function SidebarChat({
   setMsgLength,
   user,
   signOut,
+  mobileNavVisible,
+  setMobileNavVisible,
 }) {
 
   const [seed, setSeed] = useState('');
@@ -77,7 +79,8 @@ export function SidebarChat({
           setOpen(true),
           setInput(''),
           setActiveRoom(id),
-          setMsgLength(messages)
+          setMsgLength(messages),
+          setMobileNavVisible(false)
         )}
       >
         <Avatar src={`https://source.unsplash.com/random/200x200?sig=${seed}`} />

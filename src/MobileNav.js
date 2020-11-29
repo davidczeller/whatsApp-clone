@@ -12,6 +12,8 @@ export function MobileNav(props) {
   const {
     setOpen,
     signOut,
+    mobileNavVisible,
+    setMobileNavVisible,
   } = props
 
 
@@ -35,7 +37,10 @@ export function MobileNav(props) {
   const id = anchorEl ? 'simple-popover' : undefined;
 
   return (
-    <div className="iconContainer" >
+    <div 
+    className="iconContainer" 
+    style={{bottom: mobileNavVisible ?  '.5vh' : '-8.5vh' }}
+    >
       <IconButton onClick={(e, idx) => console.log(e.currentTarget, idx)}>
         <img src={`https://img.icons8.com/wired/24/${active ? activeColor : color}/connection-status-on.png`} />
         <p style={{ color: active ? `#${activeColor}` : `#${color}` }} >Status</p>

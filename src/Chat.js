@@ -40,6 +40,8 @@ export function Chat(props) {
     setInput,
     msgLength,
     setMsgLength,
+    mobileNavVisible,
+    setMobileNavVisible,
   } = props
 
   const [seed, setSeed] = useState('')
@@ -303,6 +305,7 @@ export function Chat(props) {
             setInput('')
             setProgress(0)
             setIsDisabled(true)
+            setImage(null)
           })
         }
       )
@@ -331,7 +334,13 @@ export function Chat(props) {
         <div className={'header'}>
           {isMobile &&
             <>
-              <ArrowBackIos onClick={() => setOpen(false)} style={{ margin: '0 12px' }} />
+              <ArrowBackIos
+                onClick={() => (
+                  setOpen(false),
+                  setMobileNavVisible(true)
+                )}
+                style={{ margin: '0 12px' }}
+              />
             </>
           }
           <Avatar src={`https://source.unsplash.com/random/200x200?sig=${seed}`} />
@@ -342,7 +351,6 @@ export function Chat(props) {
               {lastSeen && lastSeen.substring(15, 21)}
             </p>
           </div>
-          {/* {!isMobile ? ( */}
           <div className='headerRight'>
             <ClickAwayListener
               onClickAway={() => (
@@ -362,27 +370,18 @@ export function Chat(props) {
                   type='text'
                   onChange={e => setSearch(e.target.value)}
                 />
-                <IconButton>
+                <IconButton onClick={() => (setVisible((prev) => !prev), focus())}>
                   <Search
                     aria-describedby={id}
-                    onClick={
-                      // () => setVisible(true)
-                      () => (setVisible((prev) => !prev), focus())
-
-                      // (e) => (
-                      // console.log(e.currentTarget),
-                      // setAnchorEl(e.currentTarget),
-                      // e.preventDefault(),
-                      // focus()
-                      // )
-                    }
                   />
                 </IconButton>
               </div>
             </ClickAwayListener>
-            <IconButton>
-              <MoreVert />
-            </IconButton>
+            {!isMobile &&
+              <IconButton>
+                <MoreVert />
+              </IconButton>
+            }
           </div>
           {/* // ) : (
           //     <div className='headerRight'>
@@ -447,25 +446,27 @@ export function Chat(props) {
             </p>
           ))) : (
             messages && messages.map((message, idx) => (
-              <div className={`chatBubble ${message.name === name && 'reciever'} `}>
+              <div key={idx + 2} className={`chatBubble ${message.name === name && 'reciever'} `}>
                 <span className={`chatName ${message.name === name && 'reciever'} `}>
                   {message.name.split(' ')[0]}
                 </span>
                 {message.url ? (
                   message.message ? (
-                    <a href={message.message} target='_blank'>
-                      <div
-                        style={{
-                          backgroundImage: `url(${message.url})`,
-                          borderBottomLeftRadius: 0,
-                          borderBottomRightRadius: 0,
-                        }}
-                        className={`imageBubble ${message.name === name && 'reciever'}`}
-                      />
+                    <>
+                      <a href={message.message} target='_blank'>
+                        <div
+                          style={{
+                            backgroundImage: `url(${message.url})`,
+                            borderBottomLeftRadius: 0,
+                            borderBottomRightRadius: 0,
+                          }}
+                          className={`imageBubble ${message.name === name && 'reciever'}`}
+                        />
+                      </a>
                       <a href={input.includes('https://') ? message.message : `https://www.${message.message}`} target='_blank' className='videoLink'>
                         <p className='videoLink'>{message.message}</p>
                       </a>
-                    </a>
+                    </>
                   ) : (
                       <>
                         <Modal
@@ -505,27 +506,30 @@ export function Chat(props) {
         </div>
       </div>
       <div className='footer'>
-        <div>
-          <div className='imageUploadContainer'>
-            {!image ? (
-              <input
-                type='file'
-                onChange={handleFileChange}
-                className='custom-file-input'
-              />
-            ) : (
-                <IconButton onClick={handleFileUpdate}>
-                  <CloudUpload
-                    style={{ color: isDisabled ? '#444' : '#fff' }}
-                  />
-                </IconButton>
-              )}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div>
+            <div className='imageUploadContainer'>
+              {!image ? (
+                <input
+                  type='file'
+                  onChange={handleFileChange}
+                  className='custom-file-input'
+                />
+              ) : (
+                  <IconButton onClick={handleFileUpdate}>
+                    <CloudUpload
+                      style={{ color: isDisabled ? '#444' : '#fff' }}
+                    />
+                  </IconButton>
+                )}
+            </div>
+            {progress > 0 ? <progress value={progress} max='100' /> : ''}
+            <div>{error}</div>
           </div>
-          {progress > 0 ? <progress value={progress} max='100' /> : ''}
-          <div>{error}</div>
+          <InsertEmoticon style={{ color: '#fff' }} onClick={() => setEmojiOpen(!emojiOpen)} />
+          <EmojiKeyboard emojiOpen={emojiOpen} />
         </div>
-        <InsertEmoticon style={{ color: '#fff' }} onClick={() => setEmojiOpen(!emojiOpen)} />
-        <EmojiKeyboard emojiOpen={emojiOpen} />
+
         <form>
           <input
             className='msgInput'

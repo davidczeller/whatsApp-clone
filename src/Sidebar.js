@@ -19,6 +19,8 @@ export function Sidebar(props) {
     setMsgLength,
     user,
     signOut,
+    mobileNavVisible,
+    setMobileNavVisible,
   } = props
 
   const [rooms, setRooms] = useState([]);
@@ -67,8 +69,8 @@ export function Sidebar(props) {
               <IconButton>
                 <Chat />
               </IconButton>
-              <IconButton >
-                <MoreVert aria-describedby={id} onClick={(e) => setAnchorEl(e.currentTarget)} />
+              <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+                <MoreVert aria-describedby={id} />
               </IconButton>
               <Popover
                 id={id}
@@ -113,6 +115,8 @@ export function Sidebar(props) {
       </div>
       <div className='chats'>
         <SidebarChat
+          mobileNavVisible={mobileNavVisible}
+          setMobileNavVisible={setMobileNavVisible}
           user={user}
           signOut={signOut}
           setInput={setInput}
@@ -127,6 +131,8 @@ export function Sidebar(props) {
         {search !== '' ? (
           filteredChats.map((room, idx) => (
             <SidebarChat
+              mobileNavVisible={mobileNavVisible}
+              setMobileNavVisible={setMobileNavVisible}
               user={user}
               signOut={signOut}
               setInput={setInput}
@@ -143,6 +149,8 @@ export function Sidebar(props) {
               {...room}
             />
             // <SidebarChat
+            // mobileNavVisible = { mobileNavVisible }
+            //       setMobileNavVisible = { setMobileNavVisible }
             // user = { user }
             //   setInput={setInput}
             //   activeRoom={activeRoom}
@@ -156,6 +164,8 @@ export function Sidebar(props) {
         ) : (
             rooms.map(room => (
               <SidebarChat
+                mobileNavVisible={mobileNavVisible}
+                setMobileNavVisible={setMobileNavVisible}
                 user={user}
                 signOut={signOut}
                 setInput={setInput}
@@ -173,6 +183,8 @@ export function Sidebar(props) {
           )}
         {/* {rooms.map(room => (
           <SidebarChat
+          mobileNavVisible={mobileNavVisible}
+                  setMobileNavVisible={setMobileNavVisible}
                   user={user}
                   signOut={signOut}          
             setInput={setInput}

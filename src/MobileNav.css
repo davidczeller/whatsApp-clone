@@ -2,7 +2,7 @@
   height: 8vh;
   width: 98vw;
   position: fixed;
-  bottom: .5vh;
+  /* bottom: .5vh; */
   left: 1vw;
   display: flex;
   justify-content: space-around;
@@ -10,6 +10,7 @@
   background-color: #232324;
   border-radius: 10px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  transition: all .4s ease-in;
   /* z-index: 2; */
 }
 

@@ -22,6 +22,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [authenticated, setAuthenticated] = useState(null)
   const [input, setInput] = useState('')
+  const [mobileNavVisible, setMobileNavVisible] = useState(true)
 
   const signIn = () => {
     auth
@@ -97,8 +98,10 @@ function App() {
                     msgLength={msgLength}
                     setMsgLength={setMsgLength}
                     isMobile={isMobile}
-                    avatar={user && user.photoURL}
-                    name={user && user.displayName}
+                    avatar={user.photoURL}
+                    name={user.displayName}
+                    mobileNavVisible={mobileNavVisible}
+                    setMobileNavVisible={setMobileNavVisible}
                   />
                   <Switch>
                     <Route path='/rooms/:roomId'>
@@ -111,6 +114,8 @@ function App() {
                         activeRoom={activeRoom}
                         name={user && user.displayName}
                         isMobile={isMobile}
+                        mobileNavVisible={mobileNavVisible}
+                        setMobileNavVisible={setMobileNavVisible}
                       />
                     </Route>
                     <Route path='/'>
@@ -122,6 +127,8 @@ function App() {
                         setMsgLength={setMsgLength}
                         activeRoom={activeRoom}
                         isMobile={isMobile}
+                        mobileNavVisible={mobileNavVisible}
+                        setMobileNavVisible={setMobileNavVisible}
                       />
                     </Route>
                   </Switch>
@@ -142,8 +149,15 @@ function App() {
                     setOpen={setOpen}
                     avatar={user.photoURL}
                     name={user.displayName}
+                    mobileNavVisible={mobileNavVisible}
+                    setMobileNavVisible={setMobileNavVisible}
                   />
-                  <MobileNav setOpen={setOpen} signOut={signOut} />
+                  <MobileNav
+                    setOpen={setOpen}
+                    signOut={signOut}
+                    mobileNavVisible={mobileNavVisible}
+                    setMobileNavVisible={setMobileNavVisible}
+                  />
                   <Switch>
                     <Route path='/rooms/:roomId'>
                       <Chat
@@ -157,6 +171,8 @@ function App() {
                         open={open}
                         isMobile={isMobile}
                         setOpen={setOpen}
+                        mobileNavVisible={mobileNavVisible}
+                        setMobileNavVisible={setMobileNavVisible}
                       />
                     </Route>
                     <Route path='/'>
@@ -169,6 +185,8 @@ function App() {
                         activeRoom={activeRoom}
                         isMobile={isMobile}
                         setOpen={setOpen}
+                        mobileNavVisible={mobileNavVisible}
+                        setMobileNavVisible={setMobileNavVisible}
                       />
                     </Route>
                   </Switch>
