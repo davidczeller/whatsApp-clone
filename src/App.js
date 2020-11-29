@@ -23,6 +23,8 @@ function App() {
   const [authenticated, setAuthenticated] = useState(null)
   const [input, setInput] = useState('')
   const [mobileNavVisible, setMobileNavVisible] = useState(true)
+  const [status, setStatus] = useState(0)
+  
 
   const signIn = () => {
     auth
@@ -49,7 +51,9 @@ function App() {
         setLoading(false)
         setUser(user)
         setAuthenticated(true);
+        setStatus(1)
       } else {
+        setStatus(0)        
         setLoading(false)
         setAuthenticated(false);
       }
@@ -102,6 +106,8 @@ function App() {
                     name={user.displayName}
                     mobileNavVisible={mobileNavVisible}
                     setMobileNavVisible={setMobileNavVisible}
+                    status={status}
+                    setStatus={setStatus}
                   />
                   <Switch>
                     <Route path='/rooms/:roomId'>
@@ -151,12 +157,15 @@ function App() {
                     name={user.displayName}
                     mobileNavVisible={mobileNavVisible}
                     setMobileNavVisible={setMobileNavVisible}
+                    status={status}
+                    setStatus={setStatus}
                   />
                   <MobileNav
                     setOpen={setOpen}
                     signOut={signOut}
                     mobileNavVisible={mobileNavVisible}
                     setMobileNavVisible={setMobileNavVisible}
+                    setStatus={setStatus}
                   />
                   <Switch>
                     <Route path='/rooms/:roomId'>

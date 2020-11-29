@@ -24,3 +24,14 @@
   font-size: .8rem;
   margin-top: 4px;
 }
+
+.speedDialContainer {
+  bottom: 66vh;
+  position: fixed;
+}
+
+.speedDialContainer>.MuiSpeedDial-root>.MuiFab-primary {
+  color: #fff;
+  background-color: transparent;
+  box-shadow: none;
+}

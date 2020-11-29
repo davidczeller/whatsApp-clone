@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { IconButton, Popover } from '@material-ui/core'
 import { Settings, Person, RateReview, ExitToApp } from "@material-ui/icons";
-
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
 
 import './MobileNav.css'
 
@@ -14,6 +14,7 @@ export function MobileNav(props) {
     signOut,
     mobileNavVisible,
     setMobileNavVisible,
+    setStatus,
   } = props
 
 
@@ -36,12 +37,59 @@ export function MobileNav(props) {
 
   const id = anchorEl ? 'simple-popover' : undefined;
 
+  const actions = [
+    { icon: <img src="https://img.icons8.com/nolan/64/online.png" />, name: 'Active', action: () => setStatus(1) },
+    { icon: <img src="https://img.icons8.com/nolan/64/offline.png" />, name: 'Offline', action: () => setStatus(0) },
+    { icon: <img src="https://img.icons8.com/nolan/64/calendar.png" />, name: 'Busy', action: () => setStatus(2) },
+  ];
+
+  const [direction, setDirection] = useState('down');
+  const [speedDialOpen, setSpeedDialOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  const handleDirectionChange = (event) => {
+    setDirection(event.target.value);
+  };
+
+  const handleHiddenChange = (event) => {
+    setHidden(event.target.checked);
+  };
+
+  const handleClose = () => {
+    setSpeedDialOpen(false);
+  };
+
+  const handleOpen = () => {
+    setSpeedDialOpen(true);
+  };
+
   return (
-    <div 
-    className="iconContainer" 
-    style={{bottom: mobileNavVisible ?  '.5vh' : '-8.5vh' }}
+    <div
+      className="iconContainer"
+      style={{ bottom: mobileNavVisible ? '.5vh' : '-8.5vh' }}
     >
-      <IconButton onClick={(e, idx) => console.log(e.currentTarget, idx)}>
+      {/* <div className='speedDialContainer'>
+        <SpeedDial
+          ariaLabel="SpeedDial example"
+          // className={classes.speedDial}
+          hidden={hidden}
+          icon={<img src={`https://img.icons8.com/wired/24/ffffff/connection-status-on.png`} />}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          open={speedDialOpen}
+          direction={direction}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={handleClose}
+            />
+          ))}
+        </SpeedDial>
+      </div> */}
+      <IconButton onClick={(e) => (setActive(e.currentTarget.querySelector('p')))}>
         <img src={`https://img.icons8.com/wired/24/${active ? activeColor : color}/connection-status-on.png`} />
         <p style={{ color: active ? `#${activeColor}` : `#${color}` }} >Status</p>
       </IconButton>
@@ -61,6 +109,27 @@ export function MobileNav(props) {
         <img src={`https://img.icons8.com/dotty/24/${active ? activeColor : color}/settings.png`} />
         <p style={{ color: active ? `#${activeColor}` : `#${color}` }}>Settings</p>
       </IconButton>
+      {/* <div> */}
+      {/* <SpeedDial
+          ariaLabel="SpeedDial example"
+          // className={classes.speedDial}
+          hidden={hidden}
+          // icon={<SpeedDialIcon />}
+          // onClose={handleClose}
+          onOpen={handleOpen}
+          open={speedDialOpen}
+          direction={direction}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={handleClose}
+            />
+          ))}
+        </SpeedDial> */}
+      {/* </div> */}
       <Popover
         id={id}
         open={anchorEl}

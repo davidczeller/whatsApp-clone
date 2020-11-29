@@ -21,6 +21,8 @@ export function Sidebar(props) {
     signOut,
     mobileNavVisible,
     setMobileNavVisible,
+    status,
+    setStatus,
   } = props
 
   const [rooms, setRooms] = useState([]);
@@ -37,6 +39,20 @@ export function Sidebar(props) {
       )
     ))
   }, [])
+
+
+  let statusColor;
+  
+  switch (status) {
+    case 1:
+      statusColor = '#42b72a';
+      break;
+    case 0:
+      statusColor = '#E91E63';
+      break;
+    default:
+      statusColor = '#ff5722';
+  }
 
 
 
@@ -58,6 +74,10 @@ export function Sidebar(props) {
         {/* <Avatar src='https://i.pravatar.cc/300' /> */}
         <div className='headerLeft'>
           <Avatar src={avatar} />
+          <div
+            className='statusDot'
+            style={{ backgroundColor: `${statusColor}` }}
+          />
           <h3>{firstName}</h3>
         </div>
         <div className='headerRight'>

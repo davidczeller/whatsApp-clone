@@ -258,6 +258,7 @@ export function Chat(props) {
   const [error, setError] = useState('')
   const [progress, setProgress] = useState(0)
 
+
   const handleFileChange = e => {
     const file = e.target.files[0]
     if (file) {

@@ -52,6 +52,7 @@
     align-items: center;
     width: 120px;
     justify-content: space-evenly;
+    position: relative;
 }
 
 .headerRight {
@@ -100,6 +101,16 @@
 
 .popoverButton:hover {
     background-color: #383838 !important;
+}
+
+.statusDot {
+    position: absolute;
+    background: aqua;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    bottom: 0;
+    left: 40px;
 }
 
 @media (max-width: 960px) {
