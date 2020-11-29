@@ -12,6 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-overflow-scrolling: auto;
   overflow: hidden;
+  background-color: #2b272c;
 }
 
 code {

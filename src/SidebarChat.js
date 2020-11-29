@@ -21,6 +21,7 @@ export function SidebarChat({
   msgLength,
   setMsgLength,
   user,
+  signOut,
 }) {
 
   const [seed, setSeed] = useState('');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Avatar, IconButton, Popover, Button } from '@material-ui/core'
-import { DonutLarge, Chat, MoreVert, SearchOutlined, Settings, Person, RateReview } from "@material-ui/icons";
+import { DonutLarge, Chat, MoreVert, SearchOutlined, Settings, Person, RateReview, ExitToApp } from "@material-ui/icons";
 
 import './Sidebar.css';
 import { SidebarChat } from "./SidebarChat";
@@ -18,6 +18,7 @@ export function Sidebar(props) {
     msgLength,
     setMsgLength,
     user,
+    signOut,
   } = props
 
   const [rooms, setRooms] = useState([]);
@@ -47,7 +48,7 @@ export function Sidebar(props) {
     )
   }, [search, rooms])
 
-  const firstName = name.split(' ')[0];
+  const firstName = name && name.split(' ')[0];
 
   return (
     <div className='sidebar'>
@@ -95,6 +96,10 @@ export function Sidebar(props) {
                   <Settings />
                   Settings
                 </IconButton>
+                <IconButton className='popoverButton' onClick={signOut}>
+                  <ExitToApp />
+                  Sign Out
+                </IconButton>
               </Popover>
             </>
           )}
@@ -109,6 +114,7 @@ export function Sidebar(props) {
       <div className='chats'>
         <SidebarChat
           user={user}
+          signOut={signOut}
           setInput={setInput}
           addnewChat
           isMobile={isMobile}
@@ -122,6 +128,7 @@ export function Sidebar(props) {
           filteredChats.map((room, idx) => (
             <SidebarChat
               user={user}
+              signOut={signOut}
               setInput={setInput}
               setActiveRoom={setActiveRoom}
               activeRoom={activeRoom}
@@ -150,6 +157,7 @@ export function Sidebar(props) {
             rooms.map(room => (
               <SidebarChat
                 user={user}
+                signOut={signOut}
                 setInput={setInput}
                 setActiveRoom={setActiveRoom}
                 activeRoom={activeRoom}
@@ -165,7 +173,8 @@ export function Sidebar(props) {
           )}
         {/* {rooms.map(room => (
           <SidebarChat
-                  user={user}          
+                  user={user}
+                  signOut={signOut}          
             setInput={setInput}
             activeRoom={activeRoom}
             key={room.id}
