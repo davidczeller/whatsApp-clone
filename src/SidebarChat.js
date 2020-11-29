@@ -61,7 +61,7 @@ export function SidebarChat({
   //   setMsgLength(messages.length)
   //   console.log('Room Changed!',messages.length, msgLength)
   // }, [])
-  const userFullName = user.additionalUserInfo.profile.name
+  const userFullName = user.displayName
   const senderFullName = messages.length && messages[0].name
   const senderFirstName = senderFullName && senderFullName.split(' ')
   const userName = userFullName === senderFullName

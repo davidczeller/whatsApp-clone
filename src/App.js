@@ -10,12 +10,14 @@ import { useStateValue } from './StateProvider'
 import { useMediaQuery } from "@material-ui/core";
 
 import { auth, provider } from './firbase'
+import firebase from 'firebase'
 
 
 function App() {
   // const [{ user }, dispatch] = useStateValue(null)
 
   const [user, setUser] = useState(null)
+  const [authenticated, setAuthenticated] = useState(null)
   const [input, setInput] = useState('')
 
   const signIn = () => {
@@ -30,6 +32,19 @@ function App() {
       .then(result => setUser(result))
       .catch(error => alert(error.message))
   }
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user)
+        setUser(user)
+        setAuthenticated(true);
+      } else {
+        setAuthenticated(false);
+      }
+    });
+  }, [])
+
 
   const isMobile = useMediaQuery('(max-width:600px)');
   const [open, setOpen] = useState(false)
@@ -53,17 +68,18 @@ function App() {
   const [activeRoom, setActiveRoom] = useState(null)
   const [msgLength, setMsgLength] = useState(0)
 
+  console.log(authenticated, user, user && user.$)
 
   return (
     <div className="app">
-      {!user ? (
+      {!authenticated && !user ? (
         <Login signIn={signIn} />
       ) : (
           !isMobile ? (
             <div className='app_body'>
               <Router>
                 <Sidebar
-                  user={user}
+                  user={user && user}
                   input={input}
                   setInput={setInput}
                   activeRoom={activeRoom}
@@ -71,8 +87,8 @@ function App() {
                   msgLength={msgLength}
                   setMsgLength={setMsgLength}
                   isMobile={isMobile}
-                  avatar={user.additionalUserInfo.profile.picture}
-                  name={user.additionalUserInfo.profile.given_name}
+                  avatar={user && user.photoURL}
+                  name={user && user.displayName}
                 />
                 <Switch>
                   <Route path='/rooms/:roomId'>
@@ -83,7 +99,7 @@ function App() {
                       msgLength={msgLength}
                       setMsgLength={setMsgLength}
                       activeRoom={activeRoom}
-                      name={user.additionalUserInfo.profile.name}
+                      name={user && user.displayName}
                       isMobile={isMobile}
                     />
                   </Route>
@@ -104,7 +120,7 @@ function App() {
           ) : (
               <Router>
                 <Sidebar
-                  user={user}                
+                  user={user}
                   input={input}
                   setInput={setInput}
                   setActiveRoom={setActiveRoom}
@@ -113,8 +129,8 @@ function App() {
                   activeRoom={activeRoom}
                   isMobile={isMobile}
                   setOpen={setOpen}
-                  avatar={user.additionalUserInfo.profile.picture}
-                  name={user.additionalUserInfo.profile.given_name}
+                  avatar={user.photoURL}
+                  name={user.displayName}
                 />
                 <MobileNav setOpen={setOpen} />
                 <Switch>
@@ -126,7 +142,7 @@ function App() {
                       msgLength={msgLength}
                       setMsgLength={setMsgLength}
                       activeRoom={activeRoom}
-                      name={user.additionalUserInfo.profile.name}
+                      name={user.displayName}
                       open={open}
                       isMobile={isMobile}
                       setOpen={setOpen}

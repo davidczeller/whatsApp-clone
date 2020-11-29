@@ -47,13 +47,15 @@ export function Sidebar(props) {
     )
   }, [search, rooms])
 
+  const firstName = name.split(' ')[0];
+
   return (
     <div className='sidebar'>
       <div className='sideBarHeader'>
         {/* <Avatar src='https://i.pravatar.cc/300' /> */}
         <div className='headerLeft'>
           <Avatar src={avatar} />
-          <h3>{name}</h3>
+          <h3>{firstName}</h3>
         </div>
         <div className='headerRight'>
           {!isMobile && (
