@@ -78,8 +78,6 @@ function App() {
   const [activeRoom, setActiveRoom] = useState(null)
   const [msgLength, setMsgLength] = useState(0)
 
-  console.log(authenticated, user, user && user.$)
-
   return (
     !loading ? (
       <div className="app">
@@ -145,7 +143,7 @@ function App() {
                     avatar={user.photoURL}
                     name={user.displayName}
                   />
-                  <MobileNav setOpen={setOpen} />
+                  <MobileNav setOpen={setOpen} signOut={signOut} />
                   <Switch>
                     <Route path='/rooms/:roomId'>
                       <Chat

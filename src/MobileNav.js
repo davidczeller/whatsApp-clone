@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { IconButton, Popover } from '@material-ui/core'
-import { Settings, Person, RateReview } from "@material-ui/icons";
+import { Settings, Person, RateReview, ExitToApp } from "@material-ui/icons";
 
 
 import './MobileNav.css'
@@ -11,6 +11,7 @@ export function MobileNav(props) {
 
   const {
     setOpen,
+    signOut,
   } = props
 
 
@@ -72,15 +73,19 @@ export function MobileNav(props) {
         <IconButton className='popoverButton'>
           <RateReview />
           New Room
-                </IconButton>
+          </IconButton>
         <IconButton className='popoverButton'>
           <Person />
           Profile
-                </IconButton>
+          </IconButton>
         <IconButton className='popoverButton'>
           <Settings />
           Settings
-                </IconButton>
+        </IconButton>
+        <IconButton className='popoverButton' onClick={signOut}>
+          <ExitToApp />
+          Sign Out
+          </IconButton>
       </Popover>
     </div>
   )

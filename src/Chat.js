@@ -343,47 +343,47 @@ export function Chat(props) {
             </p>
           </div>
           {/* {!isMobile ? ( */}
-            <div className='headerRight'>
-              <ClickAwayListener
-                onClickAway={() => (
-                  setSearch(''),
-                  visible && setVisible(false)
-                )}
-              >
-                <div>
-                  <input
-                    style={{
-                      width: visible ? '240px' : 0,
-                      paddingLeft: visible ? '12px' : 0,
-                      paddingRight: visible ? '12px' : 0
-                    }}
-                    className='desktopSearch'
-                    placeholder='Search in Conversation...'
-                    type='text'
-                    onChange={e => setSearch(e.target.value)}
-                  />
-                  <IconButton>
-                    <Search
-                      aria-describedby={id}
-                      onClick={
-                        // () => setVisible(true)
-                        () => (setVisible((prev) => !prev), focus())
+          <div className='headerRight'>
+            <ClickAwayListener
+              onClickAway={() => (
+                setSearch(''),
+                visible && setVisible(false)
+              )}
+            >
+              <div>
+                <input
+                  style={{
+                    width: visible ? '240px' : 0,
+                    paddingLeft: visible ? '12px' : 0,
+                    paddingRight: visible ? '12px' : 0
+                  }}
+                  className='desktopSearch'
+                  placeholder='Search in Conversation...'
+                  type='text'
+                  onChange={e => setSearch(e.target.value)}
+                />
+                <IconButton>
+                  <Search
+                    aria-describedby={id}
+                    onClick={
+                      // () => setVisible(true)
+                      () => (setVisible((prev) => !prev), focus())
 
-                        // (e) => (
-                        // console.log(e.currentTarget),
-                        // setAnchorEl(e.currentTarget),
-                        // e.preventDefault(),
-                        // focus()
-                        // )
-                      }
-                    />
-                  </IconButton>
-                </div>
-              </ClickAwayListener>
-              <IconButton>
-                <MoreVert />
-              </IconButton>
-            </div>
+                      // (e) => (
+                      // console.log(e.currentTarget),
+                      // setAnchorEl(e.currentTarget),
+                      // e.preventDefault(),
+                      // focus()
+                      // )
+                    }
+                  />
+                </IconButton>
+              </div>
+            </ClickAwayListener>
+            <IconButton>
+              <MoreVert />
+            </IconButton>
+          </div>
           {/* // ) : (
           //     <div className='headerRight'>
           //       <IconButton>
@@ -455,7 +455,11 @@ export function Chat(props) {
                   message.message ? (
                     <a href={message.message} target='_blank'>
                       <div
-                        style={{ backgroundImage: `url(${message.url})` }}
+                        style={{
+                          backgroundImage: `url(${message.url})`,
+                          borderBottomLeftRadius: 0,
+                          borderBottomRightRadius: 0,
+                        }}
                         className={`imageBubble ${message.name === name && 'reciever'}`}
                       />
                       <a href={input.includes('https://') ? message.message : `https://www.${message.message}`} target='_blank' className='videoLink'>
