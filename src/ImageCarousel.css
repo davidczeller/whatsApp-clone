@@ -1,0 +1,20 @@
+.imageCarouselContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageCarouselContainer>.imageCarouselBtn {
+  height: 40vh;
+  width: 24px;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+.imageCarouselContainer>.imageCarouselImg {
+  height: 40vh;
+  width: 88vw;
+  border-radius: 10px;
+}
