@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import './ImageCarousel.scss'
+import './ImageCarousel.css'
 
 export default function ImageCarousel({ images }) { // takes in images as props
   const [index, setIndex] = useState(0); // create state to keep track of images index, set the default index to 0
