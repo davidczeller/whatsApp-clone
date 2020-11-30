@@ -16,6 +16,8 @@ export function Modal(props) {
     idx
   } = props;
 
+  console.log(content)
+
   return (
     <div>
       <Dialog

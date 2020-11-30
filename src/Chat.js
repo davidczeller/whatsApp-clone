@@ -20,6 +20,9 @@ import {
 
 import EmojiKeyboard from './EmojiKeyboard'
 
+import { Carousel } from 'react-responsive-carousel';
+import ImageCarousel from './ImageCarousel'
+
 import db, { myStorage } from './firbase'
 import firebase from 'firebase'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
@@ -206,6 +209,7 @@ export function Chat(props) {
   }, [])
 
 
+
   //active room id
   useEffect(() => {
     console.log('Active Room: ', activeRoom)
@@ -324,8 +328,37 @@ export function Chat(props) {
   }, [isDisabled])
 
   const [modalOpen, setModalOpen] = React.useState(false);
-  const [urls, setUrls] = React.useState([])
+  const [urls, setUrls] = React.useState()
 
+  const urlArr = []
+  // const images = [
+  //   "https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+  //   "https://images.unsplash.com/photo-1581836499506-4a660b39478a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+  //   "https://images.unsplash.com/photo-1566522650166-bd8b3e3a2b4b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
+  // ]
+
+  console.log(activeRoom)
+
+  useEffect(() => {
+    activeRoom && (
+      db.collection('rooms')
+        .doc(activeRoom)
+        .collection('messages')
+        .orderBy('timestamp', 'asc')
+        .onSnapshot(snapshot =>
+          snapshot.docs.map((doc, idx) => doc.data().url
+            && setUrls([
+              doc.data().url.split(',')
+            ], idx)
+          ))
+    )
+  }, [activeRoom])
+  // setRooms(snapshot.docs.map(doc => ({
+  //   id: doc.id,
+  //   data: doc.data()
+  // }))
+
+  console.log(urls, urls && urls.length)
   return (
     <div
       className={isMobile ? 'chatMobile' : 'chat'}
@@ -473,8 +506,11 @@ export function Chat(props) {
                         <Modal
                           isOpen={modalOpen}
                           setIsOpen={setModalOpen}
-                          url={message.url}
-                          idx={idx}
+                          // url={message.url}
+                          // idx={idx}
+                          content={(
+                            <ImageCarousel images={urls} />
+                          )}
                         />
                         <div
                           onClick={() => setModalOpen(!modalOpen)}
