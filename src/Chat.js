@@ -544,7 +544,7 @@ export function Chat(props) {
       </div>
       <div className='footer'>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div>
+          <div style={{ height: image ? '' : '24px' }}>
             <div className='imageUploadContainer'>
               {!image ? (
                 <input
