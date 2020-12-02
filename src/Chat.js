@@ -215,9 +215,9 @@ export function Chat(props) {
 
 
   //active room id
-  useEffect(() => {
-    console.log('Active Room: ', activeRoom)
-  }, [activeRoom])
+  // useEffect(() => {
+  //   console.log('Active Room: ', activeRoom)
+  // }, [activeRoom])
 
 
   //----------------------------------------------------------------------------
@@ -351,7 +351,6 @@ export function Chat(props) {
     )
   }, [activeRoom])
 
-  console.log()
   const [imgIndex, setImgIndex] = useState(0)
 
   return (
