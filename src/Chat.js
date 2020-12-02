@@ -60,6 +60,10 @@ export function Chat(props) {
   const [bubble, setBubble] = useState('')
   // const [active, setActive] = useState(false)
 
+  useEffect(() => {
+    setActiveRoom(roomId)
+  })
+
   const el = document.querySelector('.msgInput')
 
   // console.log({ el, active }, document.activeElement)
@@ -330,14 +334,6 @@ export function Chat(props) {
   const [modalOpen, setModalOpen] = React.useState(false);
   const [urls, setUrls] = React.useState()
 
-  const urlArr = []
-  // const images = [
-  //   "https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
-  //   "https://images.unsplash.com/photo-1581836499506-4a660b39478a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
-  //   "https://images.unsplash.com/photo-1566522650166-bd8b3e3a2b4b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
-  // ]
-
-  console.log(activeRoom)
 
   useEffect(() => {
     activeRoom && (
@@ -345,20 +341,19 @@ export function Chat(props) {
         .doc(activeRoom)
         .collection('messages')
         .orderBy('timestamp', 'asc')
-        .onSnapshot(snapshot =>
-          snapshot.docs.map((doc, idx) => doc.data().url
-            && setUrls([
-              doc.data().url.split(',')
-            ], idx)
-          ))
+        .onSnapshot(snapshot => {
+          let promises = snapshot.docs.map(doc => doc.data().url
+          )
+          Promise.all(promises).then((downloadURLs) => {
+            setUrls(downloadURLs)
+          })
+        })
     )
   }, [activeRoom])
-  // setRooms(snapshot.docs.map(doc => ({
-  //   id: doc.id,
-  //   data: doc.data()
-  // }))
 
-  console.log(urls, urls && urls.length)
+  console.log()
+  const [imgIndex, setImgIndex] = useState(0)
+
   return (
     <div
       className={isMobile ? 'chatMobile' : 'chat'}
@@ -509,11 +504,11 @@ export function Chat(props) {
                           // url={message.url}
                           // idx={idx}
                           content={(
-                            <ImageCarousel images={urls} />
+                            <ImageCarousel images={urls && urls} index={imgIndex} />
                           )}
                         />
                         <div
-                          onClick={() => setModalOpen(!modalOpen)}
+                          onClick={() => (setModalOpen(!modalOpen), console.log(idx))}
                           style={{ backgroundImage: `url(${message.url})` }}
                           className={`imageBubble ${message.name === name && 'reciever'}`}
                         />

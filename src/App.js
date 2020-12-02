@@ -8,7 +8,7 @@ import { Login } from './Login';
 import { MobileNav } from './MobileNav';
 import { useStateValue } from './StateProvider'
 
-import { HoopSpinner } from "react-spinners-kit";
+import { Hoop, PongSpinner } from "react-spinners-kit";
 
 import { useMediaQuery } from "@material-ui/core";
 
@@ -205,8 +205,8 @@ function App() {
       </div>
     ) : (
         <div className='loader'>
-          <HoopSpinner
-            size={100}
+          <PongSpinner
+            size={200}
             color="#AB53FF"
             loading={loading}
           />

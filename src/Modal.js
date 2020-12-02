@@ -39,9 +39,6 @@ export function Modal(props) {
             {url && (
               <>
                 <img src={url} height='100%' width='100%' style={{ maxWidth: '80vw', maxHeight: '80vh' }} />
-                {/* <div className='modalImageContainer'>
-                  <img src={url} height='120' width='120' style={{ maxWidth: '80vw', maxHeight: '80vh' }} />
-                </div> */}
                 <CloseModal url={url} setIsOpen={setIsOpen} />
               </>
             )}
@@ -73,7 +70,6 @@ export function CloseModal(props) {
     url,
     setIsOpen,
   } = props
-
 
   return (
     !content && !url ? (
