@@ -1,31 +1,24 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Avatar, IconButton, Popover, ClickAwayListener } from '@material-ui/core'
 import {
-  DonutLarge,
-  AttachFile,
   MoreVert,
   InsertEmoticon,
   Mic,
   Send,
-  CameraAlt,
   ArrowBackIos,
-  VoiceChat,
-  PermPhoneMsg,
   Search,
+  CloudUpload,
   GetApp,
-  CloudUpload
 } from '@material-ui/icons'
 
 import EmojiKeyboard from './EmojiKeyboard'
 
-import { Carousel } from 'react-responsive-carousel';
 import ImageCarousel from './ImageCarousel'
 
 import db, { myStorage } from './firbase'
 import firebase from 'firebase'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 import { Modal } from './Modal'
 import './Chat.css'
@@ -41,14 +34,11 @@ export function Chat(props) {
     setActiveRoom,
     input,
     setInput,
-    msgLength,
     setMsgLength,
-    mobileNavVisible,
     setMobileNavVisible,
   } = props
 
   const [seed, setSeed] = useState('')
-  // const [input, setInput] = useState('')
   const { roomId } = useParams()
   const [roomName, setRoomName] = useState('')
   const [messages, setMessages] = useState('')
@@ -56,15 +46,15 @@ export function Chat(props) {
   const [search, setSearch] = useState('')
   const [filteredMessages, setFilteredMessages] = useState('')
   const [visible, setVisible] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(false)
-  const [bubble, setBubble] = useState('')
+  const [anchorEl,] = useState(false)
+  const [setBubble] = useState('')
   // const [active, setActive] = useState(false)
 
   useEffect(() => {
     setActiveRoom(roomId)
   })
 
-  const el = document.querySelector('.msgInput')
+  // const el = document.querySelector('.msgInput')
 
   // console.log({ el, active }, document.activeElement)
 
@@ -102,7 +92,7 @@ export function Chat(props) {
       db.collection('rooms')
         .doc(roomId)
         .collection('messages')
-        .orderBy('timestamp', 'asc')
+        .orderBy('timestamp', 'desc')
         .onSnapshot(snapshot => (
           setMessages(snapshot.docs.map(doc => doc.data()))
         ))
@@ -167,14 +157,9 @@ export function Chat(props) {
     anchorEl && el && el.focus()
   }
 
-  // const [active, setActive] = useState(false)
-  // console.log('chat', messages.length, activeRoom)
-  // const [msgLength, setMsgLength] = useState(0)
-
 
   useEffect(() => {
     setMsgLength(messages.length)
-    // console.log('Chat', messages.length, msgLength)
   })
 
   //all messages of all rooms 
@@ -231,30 +216,17 @@ export function Chat(props) {
   //----------------------------------------------------------------------------
 
   //ScrollButton
+  const [scrollPosition, setSrollPosition] = useState(0);
+  const el = document.querySelector('.body')
 
-  // const [scrollButton, setScrollButton] = useState(false);
-
-  // const [scrollPositionY, setScrollPositionY] = useState(null);
-
-  // const element = document.querySelectorAll('.body')
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", updateScrollPosition);
-
-  //   return () => window.removeEventListener("scroll", updateScrollPosition);
-  // }, []);
-
-  // const updateScrollPosition = ev => {
-  //   setScrollPositionY(window.scrollY);
-  // };
-
-  // console.log(element && element.scrollLeft, element && element.scrollTop);
+  useEffect(() => {
+    el && el.addEventListener("scroll", evt => (
+      setSrollPosition(evt.target.scrollTop)
+    ))
+  })
 
 
-  // console.log(element && element, scrollPositionY)
-
-  //style={{ display: scrollPositionY < 100 ? 'block' : 'none' }}
-
+  //popover id
   const id = anchorEl ? 'simple-popover' : undefined;
 
   //emojiKeyboard
@@ -275,7 +247,6 @@ export function Chat(props) {
       if (validImageTypes.includes(fileType)) {
         setError('')
         setImage(file)
-        // image && handleFileUpdate()
         setIsDisabled(false)
       } else {
         setError('Error: wrong filetype')
@@ -303,7 +274,6 @@ export function Chat(props) {
         () => {
           myStorage.ref('images').child(image.name).getDownloadURL().then(url => {
             setUrl(url)
-            // setInput(url)
             db.collection('rooms').doc(roomId).collection('messages').add({
               message: '',
               url: url,
@@ -467,6 +437,11 @@ export function Chat(props) {
         </div>
       </div>
       <div className='body'>
+        <div
+          style={{ float: "left", clear: "both" }}
+          ref={el => msgEnd = el}
+        >
+        </div>
         {search !== '' ? (
           filteredMessages.map((message, idx) => (
             <p key={idx + 1} className={`chatMsg ${message.name === name && 'reciever'}`}>
@@ -500,14 +475,12 @@ export function Chat(props) {
                         <Modal
                           isOpen={modalOpen}
                           setIsOpen={setModalOpen}
-                          // url={message.url}
-                          // idx={idx}
                           content={(
                             <ImageCarousel images={urls && urls} index={imgIndex} />
                           )}
                         />
                         <div
-                          onClick={() => (setModalOpen(!modalOpen), console.log(idx))}
+                          onClick={() => setModalOpen(!modalOpen)}
                           style={{ backgroundImage: `url(${message.url})` }}
                           className={`imageBubble ${message.name === name && 'reciever'}`}
                         />
@@ -530,11 +503,16 @@ export function Chat(props) {
             )
             ))
         }
-        <div
-          style={{ float: "left", clear: "both" }}
-          ref={el => msgEnd = el}
-        >
-        </div>
+      </div>
+      <div
+        className='scrollDownBtn'
+        style={{
+          bottom: (scrollPosition < -400) ? '11vh' : '6vh'
+        }}
+      >
+        <GetApp
+          onClick={scrollToBottom}
+        />
       </div>
       <div className='footer'>
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -555,12 +533,11 @@ export function Chat(props) {
                 )}
             </div>
             {progress > 0 ? <progress value={progress} max='100' /> : ''}
-            <div>{error}</div>
+            <div className='error'>{error}</div>
           </div>
           <InsertEmoticon style={{ color: '#fff' }} onClick={() => setEmojiOpen(!emojiOpen)} />
           <EmojiKeyboard emojiOpen={emojiOpen} />
         </div>
-
         <form>
           <input
             className='msgInput'
