@@ -85,6 +85,7 @@
   padding-bottom: 0;
   flex-direction: column-reverse;
   display: flex;
+  padding-bottom: 24px;
 }
 
 .chatBubble {
@@ -326,6 +327,10 @@ progress[value]::-webkit-progress-value {
   transition: all .8s ease-in-out;
 }
 
+.spacer {
+  padding-bottom: 110px;
+}
+
 @media (max-width: 960px) {
   .header {
     padding: 8px;
@@ -360,5 +365,12 @@ progress[value]::-webkit-progress-value {
     position: absolute;
     right: 48px;
     top: 1.7vh;
+  }
+  .scrollDownBtn {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .spacer {
+    padding-bottom: 80px;
   }
 }

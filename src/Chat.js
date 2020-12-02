@@ -503,11 +503,21 @@ export function Chat(props) {
             )
             ))
         }
+        <div className='spacer' />
       </div>
       <div
         className='scrollDownBtn'
         style={{
-          bottom: (scrollPosition < -400) ? '11vh' : '6vh'
+
+          bottom: scrollPosition < -400 ? (
+            '11vh'
+          ) : (
+              isMobile ? (
+                '2vh'
+              ) : (
+                  '6vh'
+                )
+            )
         }}
       >
         <GetApp
